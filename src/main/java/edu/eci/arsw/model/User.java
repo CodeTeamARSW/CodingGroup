@@ -1,12 +1,25 @@
 package edu.eci.arsw.model;
 
-public class User {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "users")
+public class User {
+	@Column(name = "name")
 	private String name;
 
+	@Column(name = "email")
+	@Id
 	private String email;
 
+	@Column(name = "passwd")
 	private String passwd;
+
+	public User(){
+	}
 
 	public User(String name, String email, String passwd){
 		this.name = name;
