@@ -3,7 +3,7 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  
 }
 
 h1,
@@ -27,7 +27,6 @@ header {
   align-items: center;
   padding: 30px 10%;
   background-color: #2f2d44;
-  box-shadow: 0px 0px 20px 0;
 }
 
 button {
@@ -42,41 +41,21 @@ button:hover {
   background-color: #38beea;
 }
 
-/*CARDS*/
+/*--------------*/
 
-body {
-  background-color: #22223a;
-
-
-  /*padding-top: 2rem;*/
-
-}
-
-.content{
-    margin-top: 3rem;
-}
-
-.card {
-  background-color: #2f2d44;
-  border: 1px soli+d #e5e5e5;
-  border-radius: 8px;
-  box-shadow: 0 1px 8px rgba(22,22,22, 0.1);
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto 1rem;
-  text-align: center;
-  padding: 3rem 2rem 2rem;
+.files {
+    display:flex;
+    /**background-color: #22223a;*/
+    padding:12px 2px 30%;
+    height:100%;
+    
 
 }
-a {
-   font-family: "Montserrat";
-    font-weight: 600;
-    color: white;
-  }
 
-h2 {
-    font-family: "Montserrat";
-    font-weight: 600;
-    color: #38beea;
+.chat {
+    display:flex;
+    /**background-color: #22223a;*/
+    padding:12px 2px 30%;
+    height:100%;
+
 }
-
