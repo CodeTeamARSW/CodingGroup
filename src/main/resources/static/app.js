@@ -1,16 +1,20 @@
 var app = (function () {
+    _local = "http://localhost:8080";
+    _external = "https://livecoding-gpv.herokuapp.com";
 
     var validateLogin = function(){
+        window.location.replace(_local + "/home.html");
+        //window.location.replace(_external + "/home.html");
+    }
 
-        $.get("/livecoding/users", function(data) {
-            console.log(data)});
-        
-        window.location.replace("http://localhost:8080/home.html");
-
+    var goToHome =  function(){
+        window.location.replace(_local +"/principal.html");
+        //window.location.replace(_external +"/principal.html");
     }
    
     return {
-        validateLogin:validateLogin
+        validateLogin:validateLogin,
+        goToHome:goToHome
     }
 
        

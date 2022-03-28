@@ -58,7 +58,7 @@ body {
 
 .card {
   background-color: #2f2d44;
-  border: 1px soli+d #e5e5e5;
+  border: 1px solid #e5e5e5;
   border-radius: 8px;
   box-shadow: 0 1px 8px rgba(22,22,22, 0.1);
   width: 100%;
