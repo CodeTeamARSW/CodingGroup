@@ -2,8 +2,7 @@ var app = (function () {
     _local = "http://localhost:8080";
     _external = "https://livecoding-gpv.herokuapp.com";
     var stompClient = null;
-    //var _idsala;
-    //var _id;
+    var _idsala;
 
 
     var validateLogin = function(){
@@ -12,46 +11,34 @@ var app = (function () {
     };
 
     var goToHome =  function(){
-        _idsala = prompt('Digite el código de la sala: ');
-        alert("Id sala: " + _idsala);
-        //sessionStorage.setItem(_idsala, _idsala);
 
-        $.ajax({
+        /*$.ajax({
             url: "http://localhost:8080/livecoding/saveRoomId",
             type: 'POST',
             data: JSON.stringify(_idsala),
             contentType: "application/json"
-        });
-        console.log("Guardando id: " + _idsala);
+        });*/
 
-        if(_idsala.length !== 0){
-            console.log("Prueba (antes del replace) => "+_idsala);
-            window.location.assign(_local +"/principal.html");
-            console.log("Prueba (despues del replace) => "+_idsala);
-            _id = sessionStorage.getItem(_idsala);
-            console.log("Prueba (despues del replace y con el local) => "+_id);
-            //window.location.replace(_external +"/principal.html");
-        }else{
-            alert("Ponga un numero!!!");
-        }
+        window.location.assign(_local +"/principal.html");
     };
+
+    var addLetter = function(letter){
+
+        var txt_zone = document.getElementById('content');
+
+
+    }
 
     var connectAndSubscribe = function () {
         var socket = new SockJS('/stompendpoint');
         var _id;
         stompClient = Stomp.over(socket);
 
-        $.get("/livecoding/getIdRoom", function(data) {
-            _id = data;
-            console.log("Obteniendo id: " + _id);
-		});
-        //_id = localStorage.getItem(_idsala);
-        console.log("--Prueba (en el connect con el local) => "+_id);
-        console.log("--Prueba (en el connect) => "+_idsala);
-
         stompClient.connect({}, function (){
-            stompClient.subscribe('/topic/file.'+_id, function (eventbody){
-                alert(eventbody);
+            stompClient.subscribe('/topic/file.'+_idsala, function (eventbody){
+
+                alert('La letra es (charachachanchan) => ' + eventbody.body);
+
             });
         });
     };
@@ -59,7 +46,15 @@ var app = (function () {
     return {
 
         init: function() {
+            _idsala = prompt('Digite el código de la sala: ');
             connectAndSubscribe();
+
+            var txt_area = document.getElementById('content');
+
+            txt_area.addEventListener( 'keypress', (e) => {
+
+                stompClient.send('/topic/file.'+_idsala, {}, String.fromCharCode(e.which));
+            })
         },
 
         validateLogin:validateLogin,
