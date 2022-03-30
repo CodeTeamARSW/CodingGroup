@@ -11,21 +11,13 @@ var app = (function () {
     };
 
     var goToHome =  function(){
-
-        /*$.ajax({
-            url: "http://localhost:8080/livecoding/saveRoomId",
-            type: 'POST',
-            data: JSON.stringify(_idsala),
-            contentType: "application/json"
-        });*/
-
         window.location.assign(_local +"/principal.html");
     };
 
-    var addLetter = function(letter){
+    var addLetter = function(){
 
         var txt_zone = document.getElementById('content');
-
+        txt_zone.map(div => );
 
     }
 
@@ -37,6 +29,7 @@ var app = (function () {
         stompClient.connect({}, function (){
             stompClient.subscribe('/topic/file.'+_idsala, function (eventbody){
 
+                addLetter();
                 alert('La letra es (charachachanchan) => ' + eventbody.body);
 
             });
@@ -46,7 +39,15 @@ var app = (function () {
     return {
 
         init: function() {
+
             _idsala = prompt('Digite el código de la sala: ');
+            $.ajax({
+                url: "http://localhost:8080/livecoding/saveRoomId",
+                type: 'POST',
+                data: JSON.stringify(_idsala),
+                contentType: "application/json"
+            });
+
             connectAndSubscribe();
 
             var txt_area = document.getElementById('content');
