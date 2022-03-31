@@ -14,11 +14,16 @@ var app = (function () {
         window.location.assign(_local +"/principal.html");
     };
 
-    var addLetter = function(){
-
+    var updateLines = function() {
+        console.log("UpdateLines -----")
         var txt_zone = document.getElementById('content');
-        txt_zone.map(div => );
-
+        txt_zone.addEventListener('keypress', updateLine);
+    }
+    var updateLine = function(evt){
+        if (evt.target.nodeName === "div") {
+            console.log(evt.target);
+            console.log(evt.target.textContent);
+        }
     }
 
     var connectAndSubscribe = function () {
@@ -29,8 +34,8 @@ var app = (function () {
         stompClient.connect({}, function (){
             stompClient.subscribe('/topic/file.'+_idsala, function (eventbody){
 
-                addLetter();
-                alert('La letra es (charachachanchan) => ' + eventbody.body);
+                //addLetter();
+                console.log('La letra es (charachachanchan) => ' + eventbody.body);
 
             });
         });
@@ -48,14 +53,16 @@ var app = (function () {
                 contentType: "application/json"
             });
 
+            updateLines()
+
             connectAndSubscribe();
 
             var txt_area = document.getElementById('content');
 
-            txt_area.addEventListener( 'keypress', (e) => {
+            /*txt_area.addEventListener( 'keypress', (e) => {
 
                 stompClient.send('/topic/file.'+_idsala, {}, String.fromCharCode(e.which));
-            })
+            })*/
         },
 
         validateLogin:validateLogin,
