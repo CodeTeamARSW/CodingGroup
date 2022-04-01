@@ -17,7 +17,6 @@ var app = (function () {
     var updateLines = function() {
         console.log("UpdateLines -----")
         var txt_zone = document.getElementById('content');
-        txt_zone.addEventListener('keypress', updateLine);
     }
     var updateLine = function(evt){
         if (evt.target.nodeName === "div") {
@@ -32,12 +31,11 @@ var app = (function () {
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, function (){
-            stompClient.subscribe('/topic/file.'+_idsala, function (eventbody){
+                stompClient.subscribe('/topic/file.'+_idsala, function (eventbody){
 
-                //addLetter();
-                console.log('La letra es (charachachanchan) => ' + eventbody.body);
-
-            });
+                    //addLetter();
+                    console.log('La letra es (charachachanchan) => ' + eventbody.body);
+                });
         });
     };
    
@@ -58,11 +56,14 @@ var app = (function () {
             connectAndSubscribe();
 
             var txt_area = document.getElementById('content');
-
-            /*txt_area.addEventListener( 'keypress', (e) => {
-
+            txt_area.addEventListener( 'keypress', (e) => {
+                console.log(e.target.selectionStart);
                 stompClient.send('/topic/file.'+_idsala, {}, String.fromCharCode(e.which));
-            })*/
+            })
+            txt_area.addEventListener( 'click', (e) => {
+                console.log(e.target.selectionStart);
+                stompClient.send('/topic/file.'+_idsala, {}, e.target.selectionStart)
+            } )
         },
 
         validateLogin:validateLogin,
