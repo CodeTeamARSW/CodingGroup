@@ -20,7 +20,7 @@ var appEventsTxtArea = (function() {
             numLineSelected = classNm[4];
             console.log("    ClassName:", classNm, "\n    NumLine:", numLineSelected);
 
-            //stompClient.send('/topic/file.'+_idsala, {}, e.target.selectionStart)
+            app.getStompClient.send('/topic/file.'+_idsala, {}, numLineSelected);
         });
     };
 
