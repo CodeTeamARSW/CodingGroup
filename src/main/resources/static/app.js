@@ -18,7 +18,7 @@ var app = (function () {
     };
 
     var goToHome =  function(){
-        window.location.assign(_local +"/principal.html");
+        window.location.assign(_external +"/principal.html");
     };
 
     var updateLines = function() {
