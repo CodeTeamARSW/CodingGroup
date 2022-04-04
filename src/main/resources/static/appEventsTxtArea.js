@@ -1,6 +1,8 @@
 var appEventsTxtArea = (function() {
 
     var numLineSelected;
+    var _idsala;
+    var _stompClient;
 
     function addEventsToTextArea() {
         var txt_area = $('#content');
@@ -14,25 +16,30 @@ var appEventsTxtArea = (function() {
     function clickEvent(txtArea){
         txtArea.addEventListener('click', (e) => {
             let divSelected = e.target;
-            console.log("div selected: ", divSelected);
-            console.log(divSelected.textContent);
-            let classNm = divSelected.className;
-            numLineSelected = classNm[4];
-            console.log("    ClassName:", classNm, "\n    NumLine:", numLineSelected);
 
-            app.getStompClient.send('/topic/file.'+_idsala, {}, numLineSelected);
+            var i=0;
+            while (divSelected != txtArea.children[i] && i<txtArea.children.length){
+                i++;
+            }
+            numLineSelected = i;
+
+            _stompClient = app.getStompClient();
+            _idsala = app.get_idSala();
+            _stompClient.send('/topic/file.'+_idsala, {}, numLineSelected);
         });
     };
 
     function KeypressEvent(txtArea) {
         txtArea.addEventListener("keypress", (e) => {
+            console.log("<------------------------ Keypress ------------------------> gonofucker")
+            console.log("El div a ver si sirve => ");
+            console.log(txtArea.children[numLineSelected].outerHTML);
+
             let codeKeyPressed = e.keyCode;
-            let characterPressed = String.fromCharCode(codeKeyPressed);
-            console.log("\nKeypress Event ----------------------");
-            console.log("codeKeyPressed:", codeKeyPressed);
-            console.log("CharacterPressed:", characterPressed);
-            //console.log("app.get_idSala()", app.get_idSala());
-            //stompClient.send('/topic/file.'+app.get_idSala(), {}, e.target.selectionStart)
+
+            if (codeKeyPressed != 13){
+                _stompClient.send('/topic/file.'+_idsala, {}, txtArea.children[numLineSelected].outerHTML);
+            }
         });
     }
     
@@ -43,6 +50,7 @@ var appEventsTxtArea = (function() {
             console.log("Keyup Event -------------------------");
             console.log("codeKeyPressed:", codeKeyPressed);
             console.log("CharacterPressed:", characterPressed);
+            _stompClient.send('/topic/file.'+_idsala, {}, codeKeyPressed);
         });
     }
     

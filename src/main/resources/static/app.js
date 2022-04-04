@@ -44,21 +44,6 @@ var app = (function () {
             });
         });
     };
-
-    /*function caretPosition(input) {
-        console.log("CaretPosition-----------------")
-        var start = input[0].selectionStart,
-            end = input[0].selectionEnd,
-            diff = end - start;
-    
-        if (start >= 0 && start == end) {
-            // do cursor position actions, example:
-            console.log('Cursor Position: ' + start);
-        } else if (start >= 0) {
-            // do ranged select actions, example:
-            console.log('Cursor Position: ' + start + ' to ' + end + ' (' + diff + ' selected chars)');
-        }
-    };*/
    
     return {
 
