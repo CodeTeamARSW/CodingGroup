@@ -13,8 +13,8 @@ var app = (function () {
     };
 
     var validateLogin = function() {
-        window.location.replace(_local + "/home.html");
-        //window.location.replace(_external + "/home.html");
+        //window.location.replace(_local + "/home.html");
+        window.location.replace(_external + "/home.html");
     };
 
     var goToHome =  function(){
