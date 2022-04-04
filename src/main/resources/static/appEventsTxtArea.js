@@ -25,21 +25,25 @@ var appEventsTxtArea = (function() {
 
             _stompClient = app.getStompClient();
             _idsala = app.get_idSala();
-            _stompClient.send('/topic/file.'+_idsala, {}, numLineSelected);
+            //console.log("Como se esta enviando "+ "{\"event\": \"click\", \"numLine\": \""+numLineSelected+"\"}");
+            _stompClient.send('/topic/file.'+_idsala, {}, "{\"event\": \"click\", \"numLine\": \""+numLineSelected+"\"}");
         });
     };
 
     function KeypressEvent(txtArea) {
         txtArea.addEventListener("keypress", (e) => {
-            console.log("<------------------------ Keypress ------------------------> gonofucker")
+            console.log("<------------------------ Keypress ------------------------")
             console.log("El div a ver si sirve => ");
+
             console.log(txtArea.children[numLineSelected].outerHTML);
 
             let codeKeyPressed = e.keyCode;
-
+            let body = "{\"event\": \"keypress\", \"html\": \""+txtArea.children[numLineSelected].outerHTML+"\", \"numLine\": \""+numLineSelected+ "\"}";
+            console.log("Como se esta enviando "+ body);
             if (codeKeyPressed != 13){
-                _stompClient.send('/topic/file.'+_idsala, {}, txtArea.children[numLineSelected].outerHTML);
+                _stompClient.send('/topic/file.'+_idsala, {},body);
             }
+
         });
     }
     
@@ -50,11 +54,28 @@ var appEventsTxtArea = (function() {
             console.log("Keyup Event -------------------------");
             console.log("codeKeyPressed:", codeKeyPressed);
             console.log("CharacterPressed:", characterPressed);
-            _stompClient.send('/topic/file.'+_idsala, {}, codeKeyPressed);
+            if (codeKeyPressed == 13 || codeKeyPressed == 40 ){
+                numLineSelected++;
+            }else if (codeKeyPressed == 38){
+                numLineSelected--;
+            }
+            let body = "{\"event\": \"keyup\", \"code\": \""+codeKeyPressed+"\", \"numLine\": \""+numLineSelected+ "\"}";
+            console.log("Como se esta enviando "+ body);
+            _stompClient.send('/topic/file.'+_idsala, {},body);
         });
+    };
+
+    function getNumLine(){
+        return numLineSelected;
+    }
+
+    function setNumLine(newLine){
+       numLineSelected = newLine;     
     }
     
     return {
-        addEventsToTextArea: addEventsToTextArea
+        addEventsToTextArea: addEventsToTextArea,
+        setNumLine:setNumLine,
+        getNumLine:getNumLine
     }
 })();

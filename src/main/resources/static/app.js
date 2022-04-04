@@ -40,7 +40,19 @@ var app = (function () {
 
         stompClient.connect({}, function (){
             stompClient.subscribe('/topic/file.'+_idsala, function (eventbody){
-                console.log('La letra es (charachachanchan) => ' + eventbody.body);
+                let txtArea = document.getElementById("content");
+                let json = JSON.parse(eventbody.body);
+                let event = json.event; 
+                if(event == "click"){
+                    console.log("Num line" + json.numLine);
+                    console.log(txtArea.children[json.numLine]);
+                    console.log("Línea seleccionada "+ txtArea.children[json.numLine].outerHTML);
+                } else if (event == "keypress"){
+                    txtArea.children[json.numLine].outerHTML = json.html;
+                    console.log(txtArea.children[json.numLine].outerHTML);    
+                }else if (event == "keyup"){
+
+                }     
             });
         });
     };
