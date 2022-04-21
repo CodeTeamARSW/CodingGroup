@@ -1,8 +1,11 @@
 package edu.eci.arsw.service;
 
+import edu.eci.arsw.model.Message;
 import edu.eci.arsw.model.Room;
 import edu.eci.arsw.model.User;
 import edu.eci.arsw.repository.ChatRepository;
+import edu.eci.arsw.repository.MessageRepository;
+import edu.eci.arsw.repository.RoomRepository;
 import edu.eci.arsw.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +15,17 @@ import java.util.List;
 public class LiveCodingService {
 
     private final UserRepository userRepository;
-    private Room room;
-    private ChatRepository chatRepository;
+    private final MessageRepository messageRepository;
+    private final ChatRepository chatRepository;
+    private final RoomRepository roomRepository;
 
-    public LiveCodingService(UserRepository userRepository, ChatRepository chatRepository){
+    private Room room;
+
+    public LiveCodingService(UserRepository userRepository, ChatRepository chatRepository, MessageRepository messageRepository, RoomRepository roomRepository){
         this.userRepository = userRepository;
         this.chatRepository = chatRepository;
+        this.messageRepository = messageRepository;
+        this.roomRepository = roomRepository;
     }
 
     public List<User> getAllUsers(){
