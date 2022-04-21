@@ -1,16 +1,33 @@
 package edu.eci.arsw.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDate;
 
-
+@Entity
+@Table(name = "messages")
 public class Message {
 
+	@Column(name = "content")
 	private String content;
+
+	@Column(name = "date")
 	private LocalDate date;
-	private User author;
+
+	@Column(name = "author")
+	private String author;
+
+	@Column(name = "idchat")
 	private String idChat;
 
-	public Message(String content, User author, String idChat) {
+	@Id
+	@Column(name = "idmessage")
+	private String idMessage;
+
+
+	public Message(String content, String author, String idChat) {
 		this.content = content;
 		this.idChat = idChat;
 		this.date = java.time.LocalDate.now();
@@ -25,7 +42,7 @@ public class Message {
 		return date;
 	}
 
-	public User getAuthor() {
+	public String getAuthor() {
 		return author;
 	}
 

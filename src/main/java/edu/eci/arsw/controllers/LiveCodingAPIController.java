@@ -28,7 +28,7 @@ public class LiveCodingAPIController {
     public ResponseEntity savRoomId(@RequestBody String idRoom){
         System.out.println("Entrando en /saveRoomId");
         this.idRoom = idRoom; 
-        lcs.initRoom(idRoom);
+        lcs.initRoom(idRoom, "1");
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
