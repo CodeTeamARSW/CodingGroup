@@ -16,7 +16,6 @@ var appEventsTxtArea = (function() {
     function clickEvent(txtArea){
         txtArea.addEventListener('click', (e) => {
             let divSelected = e.target;
-
             var i=0;
             while (divSelected != txtArea.children[i] && i<txtArea.children.length){
                 i++;
@@ -26,7 +25,11 @@ var appEventsTxtArea = (function() {
             _stompClient = app.getStompClient();
             _idsala = app.get_idSala();
             //console.log("Como se esta enviando "+ "{\"event\": \"click\", \"numLine\": \""+numLineSelected+"\"}");
-            _stompClient.send('/topic/file.'+_idsala, {}, "{\"event\": \"click\", \"numLine\": \""+numLineSelected+"\"}");
+            //_stompClient.send('/topic/file.'+_idsala, {}, "{\"event\": \"click\", \"numLine\": \""+numLineSelected+"\"}");
+            var user = sessionStorage.getItem('user');
+            console.log("User guardado ? " + user);
+            //console.log("User que esta mandando la línea " + app.getUser());
+            _stompClient.send('/app/file.'+_idsala, {}, "{\"event\": \"click\", \"numLine\": \""+numLineSelected+"\", \"user\": \"" + user + "\"}");
         });
     };
 
@@ -38,10 +41,16 @@ var appEventsTxtArea = (function() {
             console.log(txtArea.children[numLineSelected].outerHTML);
 
             let codeKeyPressed = e.keyCode;
-            let body = "{\"event\": \"keypress\", \"html\": \""+txtArea.children[numLineSelected].outerHTML+"\", \"numLine\": \""+numLineSelected+ "\"}";
-            console.log("Como se esta enviando "+ body);
-            if (codeKeyPressed != 13){
-                _stompClient.send('/topic/file.'+_idsala, {},body);
+
+            if (codeKeyPressed != 13 ){
+                setTimeout(function(){
+                    var user = sessionStorage.getItem('user');
+                    let body = "{\"event\": \"keypress\", \"html\": \""+txtArea.children[numLineSelected].outerHTML+"\", \"numLine\": \""+numLineSelected+"\", \"user\": \"" + user + "\"}";
+                    console.log("Como se esta enviando "+ body);
+                    console.log("Enviando el mensaje");
+                    //_stompClient.send('/topic/file.'+_idsala, {},);
+                    _stompClient.send('/app/file.'+_idsala, {}, body);
+                },100);
             }
 
         });
@@ -59,9 +68,11 @@ var appEventsTxtArea = (function() {
             }else if (codeKeyPressed == 38){
                 numLineSelected--;
             }
-            let body = "{\"event\": \"keyup\", \"code\": \""+codeKeyPressed+"\", \"numLine\": \""+numLineSelected+ "\"}";
+            var user = sessionStorage.getItem('user');
+            let body = "{\"event\": \"keyup\", \"code\": \""+codeKeyPressed+"\", \"numLine\": \""+numLineSelected+"\", \"user\": \"" + user + "\"}";
             console.log("Como se esta enviando "+ body);
-            _stompClient.send('/topic/file.'+_idsala, {},body);
+            //_stompClient.send('/topic/file.'+_idsala, {},body);
+            _stompClient.send('/app/file.'+_idsala, {}, body);
         });
     };
 

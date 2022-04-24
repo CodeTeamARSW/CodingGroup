@@ -1,6 +1,8 @@
 var app = (function () {
     _local = "http://localhost:8080";
     _external = "https://livecoding-gpv.herokuapp.com";
+    var _user;
+    var _password;
     var stompClient = null;
     var _idsala;
 
@@ -12,13 +14,22 @@ var app = (function () {
         return _idsala;
     };
 
+    var getUser= function(){
+        return _user;
+    };
     var validateLogin = function() {
-        //window.location.replace(_local + "/home.html");
-        window.location.replace(_external + "/home.html");
+        _user = document.getElementById('userName').value;
+        _password = document.getElementById('password').value;
+        //Guardando usuario
+        sessionStorage.setItem('user', _user);
+
+        window.location.replace(_local + "/home.html");
+        //window.location.replace(_external + "/home.html");
     };
 
     var goToHome =  function(){
-        window.location.assign(_external +"/principal.html");
+        window.location.assign(_local +"/principal.html");
+        //window.location.assign(_external +"/principal.html");
     };
 
     var updateLines = function() {
@@ -42,12 +53,13 @@ var app = (function () {
             stompClient.subscribe('/topic/file.'+_idsala, function (eventbody){
                 let txtArea = document.getElementById("content");
                 let json = JSON.parse(eventbody.body);
-                let event = json.event; 
-                if(event == "click"){
+                let event = json.event;
+
+                if(event == "click" && (_user != json.user )){
                     console.log("Num line" + json.numLine);
                     console.log(txtArea.children[json.numLine]);
                     console.log("Línea seleccionada "+ txtArea.children[json.numLine].outerHTML);
-                } else if (event == "keypress"){
+                } else if (event == "keypress" &&  (_user != json.user ) ){
                     txtArea.children[json.numLine].outerHTML = json.html;
                     console.log(txtArea.children[json.numLine].outerHTML);    
                 }else if (event == "keyup"){
@@ -71,14 +83,15 @@ var app = (function () {
                 data: JSON.stringify(_idsala),
                 contentType: "application/json"
             });
-
+            _user = sessionStorage.getItem('user');
             updateLines();
             connectAndSubscribe();
             appEventsTxtArea.addEventsToTextArea();
         },
 
         validateLogin:validateLogin,
-        goToHome:goToHome
+        goToHome:goToHome,
+        getUser:getUser
     }
 
 })();
