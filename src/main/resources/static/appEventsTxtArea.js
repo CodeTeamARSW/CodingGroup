@@ -63,16 +63,31 @@ var appEventsTxtArea = (function() {
             console.log("Keyup Event -------------------------");
             console.log("codeKeyPressed:", codeKeyPressed);
             console.log("CharacterPressed:", characterPressed);
-            if (codeKeyPressed == 13 || codeKeyPressed == 40 ){
+            if (codeKeyPressed == 13){
                 numLineSelected++;
-            }else if (codeKeyPressed == 38){
-                numLineSelected--;
+            } else if (codeKeyPressed == 38) {
+                if (numLineSelected != 0) {
+                    numLineSelected--;
+                }
+            } else if (codeKeyPressed == 40) {
+                console.log("txtArea.children.length: " + txtArea.children.length);
+                if (numLineSelected != txtArea.children.length) {
+                    numLineSelected++;
+                }
             }
+
             var user = sessionStorage.getItem('user');
-            let body = "{\"event\": \"keyup\", \"code\": \""+codeKeyPressed+"\", \"numLine\": \""+numLineSelected+"\", \"user\": \"" + user + "\"}";
-            console.log("Como se esta enviando "+ body);
+            var body;
+            if (codeKeyPressed == 8) {
+                body = "{\"event\": \"keyup\", \"code\": \""+codeKeyPressed+"\", \"html\": \""+txtArea.children[numLineSelected].outerHTML+"\", \"numLine\": \""+numLineSelected+"\", \"user\": \"" + user + "\"}";
+                _stompClient.send('/app/file.'+_idsala, {}, body);
+            } else if (codeKeyPressed == 13 || codeKeyPressed == 38 || codeKeyPressed == 40) {
+                body = "{\"event\": \"keyup\", \"code\": \""+codeKeyPressed+"\", \"numLine\": \""+numLineSelected+"\", \"user\": \"" + user + "\"}";
+                _stompClient.send('/app/file.'+_idsala, {}, body);
+            }
+            console.log("Como se esta enviando "+ body + "########################################################");
             //_stompClient.send('/topic/file.'+_idsala, {},body);
-            _stompClient.send('/app/file.'+_idsala, {}, body);
+            //_stompClient.send('/app/file.'+_idsala, {}, body);
         });
     };
 

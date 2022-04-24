@@ -5,6 +5,7 @@ var app = (function () {
     var _password;
     var stompClient = null;
     var _idsala;
+    var blockedLines = [];
 
     var getStompClient = function(){
         return stompClient;
@@ -17,6 +18,7 @@ var app = (function () {
     var getUser= function(){
         return _user;
     };
+
     var validateLogin = function() {
         _user = document.getElementById('userName').value;
         _password = document.getElementById('password').value;
@@ -44,6 +46,17 @@ var app = (function () {
         }
     };
 
+    var findLineBlockedByUser = function(user) {
+        let indexTemp;
+        blockedLines.forEach(function(element, index) {
+            if (element.user == user) {
+                indexTemp = index;
+            }
+        });
+        console.log("Dato en la posición " + indexTemp + "/////////////////////////////////////////////////////////")
+        return indexTemp;
+    }
+
     var connectAndSubscribe = function () {
         var socket = new SockJS('/stompendpoint');
         var _id;
@@ -67,7 +80,12 @@ var app = (function () {
 
                 console.log("Mensaje Recibido:\n", json);
                 if(event == "click" && (_user != json.user)){
-                    console.log("Num line" + json.numLine);
+                    let pos = findLineBlockedByUser(json.user);
+                    if (pos != undefined) {
+                        blockedLines.splice(pos, 1);
+                    }
+                    blockedLines.push(new blockedLine(json.numLine, json.user));
+                    console.log("Num line: " + json.numLine);
                     console.log(txtArea.children[json.numLine]);
                     console.log("Línea seleccionada "+ txtArea.children[json.numLine].outerHTML);
                 } else if (event == "keypress" && (_user != json.user)){
@@ -78,17 +96,54 @@ var app = (function () {
                     if (json.code == 13) {
                         console.log("Tecla Enter oprimida en la línea " + json.numLine);
                         let newdiv = document.createElement("div");
-                        newdiv.innerHTML = "Nueva Linea <br>";
+                        newdiv.innerHTML = "<br>";
                         txtArea.children[json.numLine-1].insertAdjacentElement("afterend", newdiv);
                         console.log(txtArea.children[json.numLine]);
                         console.log(newdiv);
                     }
                     // Flecha Up
+                    if (json.code == 38) {
+                        console.log("Flecha Up oprimida");
+                        console.log("Usuario " + json.user + " saltó de la línea " + (json.numLine + 1) + " a la linea " + json.numLine);
+                        console.log("blockedLines (Antes) -> " + blockedLines);
+                        let pos = findLineBlockedByUser(json.user);
+                        if (pos != undefined) {
+                            blockedLines.splice(pos, 1);
+                        }
+                        blockedLines.push(new blockedLine(json.numLine, json.user));
+                        console.log("blockedLines (Después) -> " + blockedLines);
+                    }
+
                     // Flecha Down
+                    if (json.code == 40) {
+                        console.log("Flecha Down oprimida");
+                        console.log("Usuario " + json.user + " saltó de la línea " + (json.numLine - 1) + " a la linea " + json.numLine);
+                        console.log("blockedLines (Antes) -> " + blockedLines);
+                        let pos = findLineBlockedByUser(json.user);
+                        if (pos != undefined) {
+                            blockedLines.splice(pos, 1);
+                        }
+                        blockedLines.push(new blockedLine(json.numLine, json.user));
+                        console.log("blockedLines (Después) -> " + blockedLines);
+                    }
+
+                    // Tecla Del
+                    if (json.code == 8) {
+                        console.log("DEL: json.numLine: " + json.numLine);
+                        console.log("DEL: OBJ: " + txtArea.children[json.numLine]);
+                        console.log("DEL: outerHTML: " + txtArea.children[json.numLine].outerHTML);
+                        console.log("json.html: " + json.html);
+                        txtArea.children[json.numLine].outerHTML = json.html;
+                    }
                 }
             });
         });
     };
+
+    function blockedLine (numLine, user) {
+        this.numLine = numLine;
+        this.user = user
+    }
    
     return {
 
