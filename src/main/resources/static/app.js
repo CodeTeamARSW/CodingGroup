@@ -55,15 +55,26 @@ var app = (function () {
                 let json = JSON.parse(eventbody.body);
                 let event = json.event;
 
-                if(event == "click" && (_user != json.user )){
+                console.log("Mensaje Recibido:\n", json);
+                if(event == "click" && (_user != json.user)){
                     console.log("Num line" + json.numLine);
                     console.log(txtArea.children[json.numLine]);
                     console.log("Línea seleccionada "+ txtArea.children[json.numLine].outerHTML);
-                } else if (event == "keypress" &&  (_user != json.user ) ){
+                } else if (event == "keypress" && (_user != json.user)){
                     txtArea.children[json.numLine].outerHTML = json.html;
-                    console.log(txtArea.children[json.numLine].outerHTML);    
-                }else if (event == "keyup"){
-
+                    // console.log(txtArea.children[json.numLine].outerHTML);    
+                }else if (event == "keyup" && (_user != json.user)){
+                    // Tecla Enter
+                    if (json.code == 13) {
+                        console.log("Tecla Enter oprimida en la línea " + json.numLine);
+                        let newdiv = document.createElement("div");
+                        newdiv.innerHTML = "Nueva Linea <br>";
+                        txtArea.children[json.numLine-1].insertAdjacentElement("afterend", newdiv);
+                        console.log(txtArea.children[json.numLine]);
+                        console.log(newdiv);
+                    }
+                    // Flecha Up
+                    // Flecha Down
                 }     
             });
         });
