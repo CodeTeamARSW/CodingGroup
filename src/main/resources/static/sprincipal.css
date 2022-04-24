@@ -49,17 +49,33 @@ button:hover {
     /**background-color: #22223a;*/
     padding:12px 2px 30%;
     height:100%;
-    
+
 
 }
 
 .chat {
     display:flex;
-    /**background-color: #22223a;*/
+    background-color: #22223a;
     padding:12px 2px 30%;
-    height:100%;
-
+    height: calc(100vh - 200px);
 }
+
+#entry-chat {
+    width: calc(100% - 160px);
+    height : 40px;
+  }
+
+#button-send {
+    float: right;
+    width: 150px;
+
+  }
+
+#table-chat {
+    color: white;
+    font-family: "Montserrat", san-serif;
+}
+
 /*---------*/
 #title {
     padding: 10px 0;
@@ -98,3 +114,5 @@ button:hover {
     margin: 30px 0;
     font-family: 'Inconsolata', monospace;
 }
+
+

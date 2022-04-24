@@ -50,6 +50,16 @@ var app = (function () {
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, function (){
+            stompClient.subscribe('/topic/message.'+_idsala, function (eventbody){
+                let json = JSON.parse(eventbody.body);
+                let event = json.event;
+                if (event == 'message' ){
+                    console.log("Recibiendo el mensaje.......");
+                    console.log(json.content);
+                    $("#table-chat tbody").append("<tr><td>" +json.user + ": "+ json.content + "</td> </tr>")
+                }
+            });
+
             stompClient.subscribe('/topic/file.'+_idsala, function (eventbody){
                 let txtArea = document.getElementById("content");
                 let json = JSON.parse(eventbody.body);
@@ -75,7 +85,7 @@ var app = (function () {
                     }
                     // Flecha Up
                     // Flecha Down
-                }     
+                }
             });
         });
     };

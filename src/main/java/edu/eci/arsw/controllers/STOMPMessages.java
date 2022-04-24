@@ -14,7 +14,8 @@ public class STOMPMessages {
     SimpMessagingTemplate smt;
 
     @MessageMapping("/message.{idchat}")
-    public void handleMessageEvent(Message message, @DestinationVariable String idchat){
+    public void handleMessageEvent(String message, @DestinationVariable String idchat){
+        System.out.println("------------Entro en STOMP---Message------- ");
         smt.convertAndSend("/topic/message."+idchat, message);
     }
 
