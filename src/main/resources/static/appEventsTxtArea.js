@@ -16,20 +16,22 @@ var appEventsTxtArea = (function() {
     function clickEvent(txtArea){
         txtArea.addEventListener('click', (e) => {
             let divSelected = e.target;
+            // Se determina la el número de la linea en la que se desea editar
             var i=0;
             while (divSelected != txtArea.children[i] && i<txtArea.children.length){
                 i++;
             }
             numLineSelected = i;
-
-            _stompClient = app.getStompClient();
-            _idsala = app.get_idSala();
-            //console.log("Como se esta enviando "+ "{\"event\": \"click\", \"numLine\": \""+numLineSelected+"\"}");
-            //_stompClient.send('/topic/file.'+_idsala, {}, "{\"event\": \"click\", \"numLine\": \""+numLineSelected+"\"}");
-            var user = sessionStorage.getItem('user');
-            console.log("User guardado ? " + user);
-            //console.log("User que esta mandando la línea " + app.getUser());
-            _stompClient.send('/app/file.'+_idsala, {}, "{\"event\": \"click\", \"numLine\": \""+numLineSelected+"\", \"user\": \"" + user + "\"}");
+            // Verifica que la linea en la que se quiere editar no esté editando otro usuario.
+            let blockedBy = app.isBlockedLine(numLineSelected);
+            if (blockedBy != "") {
+                alert("La línea está siendo editada por el usuario '" + blockedBy + "'");
+            } else {
+                _stompClient = app.getStompClient();
+                _idsala = app.get_idSala();
+                var user = sessionStorage.getItem('user');
+                _stompClient.send('/app/file.'+_idsala, {}, "{\"event\": \"click\", \"numLine\": \""+numLineSelected+"\", \"user\": \"" + user + "\"}");
+            }
         });
     };
 

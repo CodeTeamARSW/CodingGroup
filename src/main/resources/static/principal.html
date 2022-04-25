@@ -25,17 +25,17 @@
     </a>
 </header>
 
-<body onload="app.init()">
+<body onload="app.init()" class="bg-dark">
     <div class ="container-fluid">
         <div class="row">
-            <div class ="files col-2 border border-primary">
+            <div class ="files col-2 borders">
                 <ul class="list-group ">
                     <button class="list-group-item list-group-item-action">HelloWorld.java</button>
                     <button class="list-group-item list-group-item-action">User.java</button>
                   </ul>
             </div>
 
-            <div class ="program col-7 border border-primary " >
+            <div class ="program col-7 borders">
                 <p><kbd>HelloWorld.java </kbd></p>
                 <div id="content" contenteditable="true" spellcheck="false" >
                     <div><br></div>
@@ -45,8 +45,9 @@
                     <div>}<br></div>
                 </div>
             </div>
-            <div class ="content-chat col-3">
-                <div class ="chat border border-primary">
+
+            <div class ="content-chat col-3 borders">
+                <div class ="chat">
 
                     <div class="messages">
                         <table id="table-chat" class="table">

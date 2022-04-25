@@ -57,6 +57,21 @@ var app = (function () {
         return indexTemp;
     }
 
+    var isBlockedLine = function (numLine) {
+        blockedBy = "";
+        blockedLines.forEach(function(element) {
+            if (element.numLine == numLine) {
+                blockedBy = element.user;
+            }
+        });
+        return blockedBy;
+    }
+    
+    function blockedLine (numLine, user) {
+        this.numLine = numLine;
+        this.user = user
+    }
+
     var connectAndSubscribe = function () {
         var socket = new SockJS('/stompendpoint');
         var _id;
@@ -139,11 +154,6 @@ var app = (function () {
             });
         });
     };
-
-    function blockedLine (numLine, user) {
-        this.numLine = numLine;
-        this.user = user
-    }
    
     return {
 
@@ -167,7 +177,8 @@ var app = (function () {
 
         validateLogin:validateLogin,
         goToHome:goToHome,
-        getUser:getUser
+        getUser:getUser,
+        isBlockedLine:isBlockedLine
     }
 
 })();
