@@ -39,10 +39,29 @@
                 <p><kbd>HelloWorld.java </kbd></p>
                 <div id="content" contenteditable="true" spellcheck="false" >
                     <div><br></div>
-                    <div>public static void main(String[] args) {<br></div>
+                    <div style="background-color:#33475b">public static void main(String[] args) {<br></div>
                     <div> &nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Hello World");<br></div>
                     <div><br></div>
                     <div>}<br></div>
+                </div>
+                <div class ="comments">
+                    <div class="comments-table">
+                        <table id="table-comment" class="table">
+                            <thead>
+                            <tr>
+                                <th><p><kbd>COMENTARIOS</kbd></kbd></p></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="send-comment" >
+                    <div><input id="nline-comment" type="number" name="" placeholder="#Linea"></div>
+                    <div><input id="entry-comment" type="text" name="" minlength="1" placeholder="New comment"></div>
+                    <div><input id="button-send-comment" type="button" class="btn btn-primary" name="" value="Send" onclick = "appChatEvents.addComment()"></div>
                 </div>
             </div>
 
@@ -62,7 +81,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="send" >
+                <div class="send-chat">
                     <input id="entry-chat" type="text" name="" maxlength="1000" placeholder="New message">
                     <input id="button-send" type="button"  class="btn btn-primary" name="" value="Send" onclick = "appChatEvents.addMessage()"  >
                 </div>

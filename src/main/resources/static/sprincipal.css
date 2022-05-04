@@ -35,7 +35,7 @@ button#buttonLogin:hover {
 
 .files {
     padding:12px 2px 30%;
-    height:calc(100vh - 200px);
+    height:calc(100vh - 140px);
     background-color: #33335c;
 }
 
@@ -43,8 +43,21 @@ button#buttonLogin:hover {
     display:flex;
     background-color: #33335c;
     padding:20px;
-    height: calc(100vh - 240px);
+    height: calc(100vh - 180px);
     overflow-y: scroll;
+}
+
+.comments {
+    display:flex;
+    background-color: #33335c;
+    padding:20px;
+    height: calc(100vh - 700px);
+    overflow-y: scroll;
+}
+
+.send-comment {
+    display: grid;
+    grid: 40px / 5% 80% 10%;
 }
 
 #entry-chat {
@@ -52,15 +65,21 @@ button#buttonLogin:hover {
     height : 40px;
 }
 
-#button-send {
+#entry-comment {
+    width: 100%;
+    /*height : 40px;*/
+}
+
+#button-send, #button-send-comment {
     float: right;
     width: 100px;
 
 }
 
-#table-chat {
+#table-chat, #table-comment {
     color: white;
     font-family: "Montserrat", san-serif;
+    border: 0px;
 }
 
 #title {
@@ -114,10 +133,6 @@ body {
 
 kbd {
   font-size: 1.5rem;
-}
-
-#table-chat {
-  border: 0px;
 }
 
 #content div {

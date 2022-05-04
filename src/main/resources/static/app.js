@@ -84,7 +84,9 @@ var app = (function () {
                 if (event == 'message' ){
                     console.log("Recibiendo el mensaje.......");
                     console.log(json.content);
-                    $("#table-chat tbody").append("<tr><td>" +json.user + ": "+ json.content + "</td> </tr>")
+                    $("#table-chat tbody").append("<tr><td>" +json.user + ": "+ json.content + "</td></tr>")
+                } else if (event == 'comment') {
+                    $("#table-comment tbody").append("<tr><td>" + json.user + ": (Linea " + json.numLineCode +") " + json.content + "</td></tr>")
                 }
             });
 
