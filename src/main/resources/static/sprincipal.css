@@ -57,7 +57,7 @@ button#buttonLogin:hover {
 
 .send-comment {
     display: grid;
-    grid: 40px / 5% 80% 10%;
+    grid: 40px / 10% 80% 10%;
 }
 
 #entry-chat {
@@ -67,10 +67,21 @@ button#buttonLogin:hover {
 
 #entry-comment {
     width: 100%;
-    /*height : 40px;*/
+    height: 100%;
 }
 
-#button-send, #button-send-comment {
+#nline-comment {
+    width: 90%;
+    height: 100%;
+}
+
+#button-send-comment {
+    float: right;
+    width: 100%;
+    height: 100%;
+}
+
+#button-send {
     float: right;
     width: 100px;
 
