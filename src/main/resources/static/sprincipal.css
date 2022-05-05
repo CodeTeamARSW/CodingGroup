@@ -52,7 +52,7 @@ button#buttonLogin:hover {
     display:flex;
     background-color: #33335c;
     padding:20px;
-    height: calc(100vh - 500px);
+    height: 30%;
     overflow-y: scroll;
 }
 
@@ -133,7 +133,7 @@ button#buttonLogin:hover {
     padding: 20px;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
     outline: none;
-    height: calc(100vh - 300px);
+    height: 47%;
     margin: 30px 0;
     overflow-y: scroll;
     font-family: 'Inconsolata', monospace;
@@ -143,6 +143,7 @@ button#buttonLogin:hover {
 
 .borders {
   border-color:rgb(69, 70, 75);
+  height: calc(100vh - 140px);
 }
 
 body {
