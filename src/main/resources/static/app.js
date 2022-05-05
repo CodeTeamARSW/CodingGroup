@@ -79,14 +79,20 @@ var app = (function () {
 
         stompClient.connect({}, function (){
             stompClient.subscribe('/topic/message.'+_idsala, function (eventbody){
+                let txtArea = document.getElementById("content");
                 let json = JSON.parse(eventbody.body);
                 let event = json.event;
                 if (event == 'message' ){
                     console.log("Recibiendo el mensaje.......");
                     console.log(json.content);
-                    $("#table-chat tbody").append("<tr><td>" +json.user + ": "+ json.content + "</td></tr>")
+                    $("#table-chat tbody").append("<tr><td>" +json.user + ": "+ json.content + "</td></tr>");
+                    $(".chat").animate({ scrollTop: $('.chat')[0].scrollHeight}, 1000);
                 } else if (event == 'comment') {
                     $("#table-comment tbody").append("<tr><td>" + json.user + ": (Linea " + json.numLineCode +") " + json.content + "</td></tr>")
+                    $(".comments").animate({ scrollTop: $('.comments')[0].scrollHeight}, 1000);
+                    // Se resalta lalinea seleccionada del comentario
+                    console.log("TXT área ", txtArea.children[json.numLineCode-1]);
+                    txtArea.children[json.numLineCode-1].setAttribute("style", "background-color:#fc303054;");
                 }
             });
 

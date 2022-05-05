@@ -17,8 +17,9 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 30px 10%;
+  padding: 15px 10%;
   background-color: #2f2d44;
+  box-shadow: 0px 0px 20px 0;
 }
 
 button#buttonLogin {
@@ -51,13 +52,13 @@ button#buttonLogin:hover {
     display:flex;
     background-color: #33335c;
     padding:20px;
-    height: calc(100vh - 700px);
+    height: calc(100vh - 500px);
     overflow-y: scroll;
 }
 
 .send-comment {
     display: grid;
-    grid: 40px / 10% 80% 10%;
+    grid: 40px / 10% 70% 20%;
 }
 
 #entry-chat {
@@ -66,25 +67,31 @@ button#buttonLogin:hover {
 }
 
 #entry-comment {
-    width: 100%;
+    width: 98%;
     height: 100%;
 }
 
 #nline-comment {
-    width: 90%;
-    height: 100%;
-}
-
-#button-send-comment {
-    float: right;
     width: 100%;
     height: 100%;
 }
 
-#button-send {
+#button-send, #button-send-comment, #button-save {
     float: right;
     width: 100px;
+    background-color: #22223a;
+    border-radius: 50px;
+    cursor: pointer;
+    border: 2px solid #38beea;
+}
 
+#button-send-comment {
+    width: 100%;
+    height: 100%;
+}
+
+#button-send-comment:hover, #button-send:hover, #button-save:hover {
+    background-color: #38beea;
 }
 
 #table-chat, #table-comment {
@@ -126,7 +133,7 @@ button#buttonLogin:hover {
     padding: 20px;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
     outline: none;
-    height: calc(100vh - 500px);
+    height: calc(100vh - 300px);
     margin: 30px 0;
     overflow-y: scroll;
     font-family: 'Inconsolata', monospace;
@@ -156,4 +163,9 @@ kbd {
     display: inline-block;
     border-right: 1px solid #ddd;
     margin-right: .5em;
+}
+
+.container-fluid {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }

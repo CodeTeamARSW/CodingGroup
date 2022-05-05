@@ -36,10 +36,14 @@
             </div>
 
             <div class ="program col-7 borders">
-                <p><kbd>HelloWorld.java </kbd></p>
+                
+                <div>
+                    <input id="button-save" type="button" class="btn btn-primary" name="" value="Save" onclick = "">
+                    <p><kbd>HelloWorld.java </kbd></p>
+                </div>
                 <div id="content" contenteditable="true" spellcheck="false" >
                     <div><br></div>
-                    <div style="background-color:#FC3030">public static void main(String[] args) {<br></div>
+                    <div>public static void main(String[] args) {<br></div>
                     <div> &nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Hello World");<br></div>
                     <div><br></div>
                     <div>}<br></div>
@@ -59,7 +63,7 @@
                     </div>
                 </div>
                 <div class="send-comment" >
-                    <div><input id="nline-comment" type="number" min="1" name="" placeholder="#Linea"></div>
+                    <div><input id="nline-comment" type="number" min="1" name="" placeholder="#Line"></div>
                     <div><input id="entry-comment" type="text" name="" minlength="1" placeholder="New comment"></div>
                     <div><input id="button-send-comment" type="button" class="btn btn-primary" name="" value="Send" onclick = "appChatEvents.addComment()"></div>
                 </div>
