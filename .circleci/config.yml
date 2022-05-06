@@ -15,7 +15,7 @@ orbs:
   # Declare a dependency on the welcome-orb
   welcome: circleci/welcome-orb@0.4.1
 
-  sonarcloud: sonarsource/sonarcloud@1.0.3
+  sonarcloud: sonarsource/sonarcloud@1.2.0
 
 # Orchestrate or schedule a set of jobs
 workflows:
