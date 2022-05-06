@@ -29,21 +29,9 @@ var app = (function () {
         //window.location.replace(_external + "/home.html");
     };
 
-    var goToHome =  function(){
+    var goToHome = function(){
         window.location.assign(_local +"/principal.html");
         //window.location.assign(_external +"/principal.html");
-    };
-
-    var updateLines = function() {
-        console.log("UpdateLines -----")
-        var txt_zone = document.getElementById('content');
-    };
-
-    var updateLine = function(evt){
-        if (evt.target.nodeName === "div") {
-            console.log(evt.target);
-            console.log(evt.target.textContent);
-        }
     };
 
     var findLineBlockedByUser = function(user) {
@@ -113,7 +101,7 @@ var app = (function () {
                     console.log("Línea seleccionada "+ txtArea.children[json.numLine].outerHTML);
                 } else if (event == "keypress" && (_user != json.user)){
                     txtArea.children[json.numLine].outerHTML = json.html;
-                    // console.log(txtArea.children[json.numLine].outerHTML);    
+                    // console.log(txtArea.children[json.numLine].outerHTML);
                 }else if (event == "keyup" && (_user != json.user)){
                     // Tecla Enter
                     if (json.code == 13) {
@@ -190,7 +178,6 @@ var app = (function () {
                 contentType: "application/json"
             });
             _user = sessionStorage.getItem('user');
-            updateLines();
             connectAndSubscribe();
             appEventsTxtArea.addEventsToTextArea();
             loadFile();

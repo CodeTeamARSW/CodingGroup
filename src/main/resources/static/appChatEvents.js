@@ -2,7 +2,7 @@ var appChatEvents = (function () {
     var _stompClient, _idsala, _user, _content;
 
 
-    var addMessage = function(evt){
+    var addMessage = function(){
 
             _stompClient = app.getStompClient();
             _idsala = app.get_idSala();
@@ -12,7 +12,7 @@ var appChatEvents = (function () {
             $('#entry-chat').val("");
     };
 
-    var addComment = function(evt){
+    var addComment = function(){
 
             _stompClient = app.getStompClient();
             _idsala = app.get_idSala();
