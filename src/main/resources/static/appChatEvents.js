@@ -18,7 +18,7 @@ var appChatEvents = (function () {
             _idsala = app.get_idSala();
             _user = sessionStorage.getItem('user');
             _content = document.getElementById('entry-comment').value;
-            _numlineCode = document.getElementById('nline-comment').value;
+            let _numlineCode = document.getElementById('nline-comment').value;
             if (_numlineCode.length == 0){
                 alert('Por favor ingresar el número de la línea a la que desea realizar un comentario');
             } else {
