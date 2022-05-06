@@ -32,7 +32,8 @@ public class LiveCodingService {
         return userRepository.findAll();
     }
 
-    public void initRoom(String idRoom, String author){
+    public Room initRoom(String idRoom, String author){
         room = new Room(idRoom,author);
+        return room;
     }
 }

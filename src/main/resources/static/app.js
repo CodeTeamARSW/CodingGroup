@@ -162,6 +162,18 @@ var app = (function () {
             });
         });
     };
+
+    var loadFile = function() {
+        console.info("Loading file...")
+        $.get("/livecoding/loadFile/"+_idsala, function(data) {
+            let file = Object.values(data);
+            console.log("file charged --------------------------------------------------------\n", file);
+        })
+        .catch(function(err) {
+            nameFile = prompt("Enter the name of the file", "HelloWorld.java");
+            $(".file-name").text(nameFile);
+        });
+    }
    
     return {
 
@@ -170,9 +182,9 @@ var app = (function () {
         get_idSala: get_idSala,
 
         init: function() {
-            _idsala = prompt('Digite el código de la sala: ');
+            _idsala = prompt('Enter the room code: ');
             $.ajax({
-                url: "http://localhost:8080/livecoding/saveRoomId",
+                url: "http://localhost:8080/livecoding/saveRoom",
                 type: 'POST',
                 data: JSON.stringify(_idsala),
                 contentType: "application/json"
@@ -181,12 +193,13 @@ var app = (function () {
             updateLines();
             connectAndSubscribe();
             appEventsTxtArea.addEventsToTextArea();
+            loadFile();
         },
 
         validateLogin:validateLogin,
         goToHome:goToHome,
         getUser:getUser,
-        isBlockedLine:isBlockedLine
+        isBlockedLine:isBlockedLine,
     }
 
 })();
