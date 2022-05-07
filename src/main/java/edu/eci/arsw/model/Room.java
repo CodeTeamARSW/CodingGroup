@@ -25,7 +25,7 @@ public class Room {
 
 	@Column(name = "file")
 	private byte file;
-	private HashMap<Integer, String> localFile;
+	private ArrayList<String> localFile;
 
 	@Column(name = "admin")
 	private String admin;
@@ -37,7 +37,7 @@ public class Room {
 		this.idChat = id;
 		members = new ArrayList<User>();
 		this.admin = admin;
-		localFile = new HashMap<>();
+		localFile = new ArrayList<>();
 	}
 
 	public String getId() {
@@ -48,11 +48,11 @@ public class Room {
 		return idChat;
 	}
 
-	public HashMap<Integer, String> getLocalFile() {
+	public ArrayList<String> getLocalFile() {
 		return localFile;
 	}
 
-	public void setLocalFile(HashMap<Integer, String> localFile) {
+	public void setLocalFile(ArrayList<String> localFile) {
 		this.localFile = localFile;
 	}
 

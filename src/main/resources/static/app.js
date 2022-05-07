@@ -42,6 +42,14 @@ var app = (function () {
         sessionStorage.setItem('idSala', _idsala);
         window.location.assign(_local +"/principal.html");
         //window.location.assign(_external +"/principal.html");
+        _user = sessionStorage.getItem('user');
+        _idsala = sessionStorage.getItem('idSala');
+        $.ajax({
+            url: _local+"/livecoding/saveRoom",
+            type: 'POST',
+            data: JSON.stringify({idSala: _idsala, admin: _user}),
+            contentType: "application/json"
+        });
     };
 
 
@@ -204,12 +212,12 @@ var app = (function () {
             //_idsala = prompt('Enter the room code: ');
             _user = sessionStorage.getItem('user');
             _idsala = sessionStorage.getItem('idSala');
-            $.ajax({
+            /*$.ajax({
                 url: _local+"/livecoding/saveRoom",
                 type: 'POST',
                 data: JSON.stringify({idSala: _idsala, admin: _user}),
                 contentType: "application/json"
-            });
+            });*/
             connectAndSubscribe();
             appEventsTxtArea.addEventsToTextArea();
             loadFile();
