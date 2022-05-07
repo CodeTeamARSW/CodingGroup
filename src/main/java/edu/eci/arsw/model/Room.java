@@ -1,6 +1,7 @@
 package edu.eci.arsw.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -24,6 +25,7 @@ public class Room {
 
 	@Column(name = "file")
 	private byte file;
+	private HashMap<Integer, String> localFile;
 
 	@Column(name = "admin")
 	private String admin;
@@ -35,6 +37,7 @@ public class Room {
 		this.idChat = id;
 		members = new ArrayList<User>();
 		this.admin = admin;
+		localFile = new HashMap<>();
 	}
 
 	public String getId() {
@@ -45,13 +48,13 @@ public class Room {
 		return idChat;
 	}
 
-	/*public Map<String, String> getFile() {
-		return file;
-	}*/
+	public HashMap<Integer, String> getLocalFile() {
+		return localFile;
+	}
 
-	/*public void setFile(Map<String, String> file) {
-		this.file = file;
-	}*/
+	public void setLocalFile(HashMap<Integer, String> localFile) {
+		this.localFile = localFile;
+	}
 
 	public byte getFile(){
 		return file;

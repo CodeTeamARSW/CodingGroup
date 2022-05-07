@@ -19,8 +19,6 @@ public class LiveCodingService {
     private final ChatRepository chatRepository;
     private final RoomRepository roomRepository;
 
-    private Room room;
-
     public LiveCodingService(UserRepository userRepository, ChatRepository chatRepository, MessageRepository messageRepository, RoomRepository roomRepository){
         this.userRepository = userRepository;
         this.chatRepository = chatRepository;
@@ -32,8 +30,7 @@ public class LiveCodingService {
         return userRepository.findAll();
     }
 
-    public Room initRoom(String idRoom, String author){
-        room = new Room(idRoom,author);
-        return room;
+    public Room initRoom(String idRoom, String admin){
+        return new Room(idRoom, admin);
     }
 }

@@ -29,10 +29,21 @@ var app = (function () {
         //window.location.replace(_external + "/home.html");
     };
 
-    var goToHome = function(){
+    var goToExistingRoom = function(){
+        _idsala = prompt('Enter the room code: ');
+        sessionStorage.setItem('idSala', _idsala);
         window.location.assign(_local +"/principal.html");
         //window.location.assign(_external +"/principal.html");
     };
+
+    var goToNewRoom = function(){
+        _idsala = Math.random().toString(36).substring(7, 15) + Math.random().toString(36).substring(7, 15);
+        alert("The id of the room is: " + _idsala);
+        sessionStorage.setItem('idSala', _idsala);
+        window.location.assign(_local +"/principal.html");
+        //window.location.assign(_external +"/principal.html");
+    };
+
 
     var findLineBlockedByUser = function(user) {
         let indexTemp;
@@ -152,14 +163,34 @@ var app = (function () {
     };
 
     var loadFile = function() {
-        console.info("Loading file...")
+        console.info("Loading file...");
         $.get("/livecoding/loadFile/"+_idsala, function(data) {
+            console.log(data);
             let file = Object.values(data);
             console.log("file charged --------------------------------------------------------\n", file);
         })
         .catch(function(err) {
             nameFile = prompt("Enter the name of the file", "HelloWorld.java");
             $(".file-name").text(nameFile);
+        });
+    };
+
+    var saveFile = function() {
+        console.info("Saving file...");
+        let dataFile = [];        
+        let txtArea = document.getElementById("content");
+        let children = txtArea.children;
+        console.log("Children:", children, " TypeOf", typeof children);
+        for (var i=0; i<children.length; i++) {
+            dataFile.push(children[i].outerText.substring(0, children[i].outerText.length-1));
+            console.log(dataFile);
+        };
+
+        $.ajax({
+            url: _local+"/livecoding/saveFile/"+_idsala,
+            type: 'PUT',
+            data: JSON.stringify(dataFile),
+            contentType: "application/json"
         });
     }
    
@@ -170,23 +201,26 @@ var app = (function () {
         get_idSala: get_idSala,
 
         init: function() {
-            _idsala = prompt('Enter the room code: ');
+            //_idsala = prompt('Enter the room code: ');
+            _user = sessionStorage.getItem('user');
+            _idsala = sessionStorage.getItem('idSala');
             $.ajax({
-                url: "http://localhost:8080/livecoding/saveRoom",
+                url: _local+"/livecoding/saveRoom",
                 type: 'POST',
-                data: JSON.stringify(_idsala),
+                data: JSON.stringify({idSala: _idsala, admin: _user}),
                 contentType: "application/json"
             });
-            _user = sessionStorage.getItem('user');
             connectAndSubscribe();
             appEventsTxtArea.addEventsToTextArea();
             loadFile();
         },
 
         validateLogin:validateLogin,
-        goToHome:goToHome,
+        goToExistingRoom:goToExistingRoom,
+        goToNewRoom:goToNewRoom,
         getUser:getUser,
         isBlockedLine:isBlockedLine,
+        saveFile:saveFile
     }
 
 })();
