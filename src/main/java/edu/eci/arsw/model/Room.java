@@ -26,7 +26,8 @@ public class Room {
 	@Column(name = "file")
 	private byte file;
 	private ArrayList<String> localFile;
-
+	//Nombre de archivo
+	private String nameFile;
 	@Column(name = "admin")
 	private String admin;
 
@@ -70,5 +71,13 @@ public class Room {
 
 	public ArrayList<User> getMembers() {
 		return members;
+	}
+
+	public String getNameFile() {
+		return nameFile;
+	}
+
+	public void setNameFile(String nameFile) {
+		this.nameFile = nameFile;
 	}
 }

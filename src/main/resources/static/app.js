@@ -24,7 +24,6 @@ var app = (function () {
         _password = document.getElementById('password').value;
         //Guardando usuario
         sessionStorage.setItem('user', _user);
-
         window.location.replace(_local + "/home.html");
         //window.location.replace(_external + "/home.html");
     };
@@ -32,10 +31,11 @@ var app = (function () {
     var goToExistingRoom = function(){
         _idsala = prompt('Enter the room code: ');
         sessionStorage.setItem('idSala', _idsala);
-        loadFile();
-        setTimeout(function(){
-            //window.location.assign(_local +"/principal.html");
-        },1000);
+        sessionStorage.setItem('newRoom','no');
+        window.location.assign(_local +"/principal.html");
+        /*setTimeout(function(){
+            loadFile();
+        },2000);*/
         //window.location.assign(_external +"/principal.html");
     };
 
@@ -43,11 +43,12 @@ var app = (function () {
         _idsala = Math.random().toString(36).substring(7, 15) + Math.random().toString(36).substring(7, 15);
         alert("The id of the room is: " + _idsala);
         sessionStorage.setItem('idSala', _idsala);
+        sessionStorage.setItem('newRoom','yes');
         window.location.assign(_local +"/principal.html");
         //window.location.assign(_external +"/principal.html");
-        _user = sessionStorage.getItem('user');
-        _idsala = sessionStorage.getItem('idSala');
-        $.ajax({
+        //_user = sessionStorage.getItem('user');
+        //_idsala = sessionStorage.getItem('idSala');
+        /*$.ajax({
             url: _local+"/livecoding/saveRoom",
             type: 'POST',
             data: JSON.stringify({idSala: _idsala, admin: _user}),
@@ -55,12 +56,8 @@ var app = (function () {
         }).then(function(data){
             loadFile();
             console.log("New file---------");
-        });
-
-
-
+        });*/
     };
-
 
     var findLineBlockedByUser = function(user) {
         let indexTemp;
@@ -181,17 +178,17 @@ var app = (function () {
 
     var loadFile = function() {
         console.info("Loading file...");
+        var file;
         $.get("/livecoding/loadFile/"+_idsala, function(data) {
-            console.log("DATA file  cargado " + data);
-            let file = Object.values(data);
-            console.log ("File en [0]" + file[0]);
-            console.log("File charged --------------------------------------------------------\n", file);
+            console.log("DATA file  cargado..." + data);
+            file = Object.values(data);
         }). then(function(data){
-            //console.log("File charged --------------------------------------------------------\n", file);
+            console.log("File charged --------------------------------------------------------\n", file);
         })
         .catch(function(err) {
-            nameFile = prompt("Enter the name of the file", "HelloWorld.java");
-            $(".file-name").text(nameFile);
+            console.log("Something bad happens :c..", file);
+            //nameFile = prompt("Enter the name of the file", "HelloWorld.java");
+            //$(".file-name").text( );
         });
     };
 
@@ -205,7 +202,6 @@ var app = (function () {
             dataFile.push(children[i].outerText.substring(0, children[i].outerText.length-1));
             console.log(dataFile);
         };
-
         $.ajax({
             url: _local+"/livecoding/saveFile/"+_idsala,
             type: 'PUT',
@@ -215,7 +211,6 @@ var app = (function () {
     }
    
     return {
-
         getStompClient: getStompClient,
 
         get_idSala: get_idSala,
@@ -224,12 +219,27 @@ var app = (function () {
             //_idsala = prompt('Enter the room code: ');
             _user = sessionStorage.getItem('user');
             _idsala = sessionStorage.getItem('idSala');
-            /*$.ajax({
-                url: _local+"/livecoding/saveRoom",
-                type: 'POST',
-                data: JSON.stringify({idSala: _idsala, admin: _user}),
-                contentType: "application/json"
-            });*/
+            //Verifica si es nueva sala o no, Si es nueva guarda, sino Carga archivo
+            //Nueva:
+            if (sessionStorage.getItem('newRoom') == 'yes' ){
+                $.ajax({
+                        url: _local+"/livecoding/saveRoom",
+                        type: 'POST',
+                        data: JSON.stringify({idSala: _idsala, admin: _user}),
+                        contentType: "application/json"
+                    }).then(function(data){
+                        //loadFile();
+                        console.log("New file---------");
+                        nameFile = prompt("Enter the name of the file", "HelloWorld.java");
+                        $(".file-name").text(nameFile);
+                        sessionStorage.setItem('nameFile', nameFile);
+
+                    });
+            }
+            if (sessionStorage.getItem('newRoom') == 'no'){
+                loadFile();
+                $(".file-name").text(sessionStorage.getItem(nameFile));
+            }
             connectAndSubscribe();
             appEventsTxtArea.addEventsToTextArea();
             //Probando dejarlos por separado
