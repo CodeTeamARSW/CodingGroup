@@ -45,12 +45,15 @@ public class LiveCodingAPIController {
         System.out.println("Loading file -----------------------------------");
         Room room = null;
         room = rooms.get(idSala);
-        System.out.println("Room: " + room);
+        System.out.println("Room File before if : " + room.getLocalFile());
         if (room != null) {
-            System.out.println("LocalFile:" + room.getLocalFile());
-            System.out.println("LocalFile:" + rooms.get(idSala).getLocalFile());
+            //System.out.println("LocalFile:" + room.getLocalFile());
+            //rooms.get(idSala).setLocalFile(new ArrayList<String>(["1"]));
+            System.out.println("LocalFile in array :" + rooms.get(idSala).getLocalFile());
             System.out.println("JSONArray: " + room.getLocalFile().toString());
-            return ResponseEntity.ok(new JSONArray(room.getLocalFile()));
+            System.out.println("Como se esta enviando...." + room.getLocalFile());
+            return ResponseEntity.ok(room.getLocalFile());
+            //return ResponseEntity.ok(new JSONArray(room.getLocalFile()));
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

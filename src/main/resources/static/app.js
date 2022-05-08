@@ -32,7 +32,10 @@ var app = (function () {
     var goToExistingRoom = function(){
         _idsala = prompt('Enter the room code: ');
         sessionStorage.setItem('idSala', _idsala);
-        window.location.assign(_local +"/principal.html");
+        loadFile();
+        setTimeout(function(){
+            //window.location.assign(_local +"/principal.html");
+        },1000);
         //window.location.assign(_external +"/principal.html");
     };
 
@@ -49,7 +52,13 @@ var app = (function () {
             type: 'POST',
             data: JSON.stringify({idSala: _idsala, admin: _user}),
             contentType: "application/json"
+        }).then(function(data){
+            loadFile();
+            console.log("New file---------");
         });
+
+
+
     };
 
 
@@ -173,9 +182,12 @@ var app = (function () {
     var loadFile = function() {
         console.info("Loading file...");
         $.get("/livecoding/loadFile/"+_idsala, function(data) {
-            console.log(data);
+            console.log("DATA file  cargado " + data);
             let file = Object.values(data);
-            console.log("file charged --------------------------------------------------------\n", file);
+            console.log ("File en [0]" + file[0]);
+            console.log("File charged --------------------------------------------------------\n", file);
+        }). then(function(data){
+            //console.log("File charged --------------------------------------------------------\n", file);
         })
         .catch(function(err) {
             nameFile = prompt("Enter the name of the file", "HelloWorld.java");
@@ -220,7 +232,8 @@ var app = (function () {
             });*/
             connectAndSubscribe();
             appEventsTxtArea.addEventsToTextArea();
-            loadFile();
+            //Probando dejarlos por separado
+            //loadFile();
         },
 
         validateLogin:validateLogin,
