@@ -10,11 +10,9 @@ import java.time.LocalDate;
 @Table(name = "messages")
 public class Message {
 
-	@Column(name = "content")
-	private String content;
-
-	@Column(name = "date")
-	private LocalDate date;
+	@Id
+	@Column(name = "idmessage")
+	private String idMessage;
 
 	@Column(name = "author")
 	private String author;
@@ -22,9 +20,11 @@ public class Message {
 	@Column(name = "idchat")
 	private String idChat;
 
-	@Id
-	@Column(name = "idmessage")
-	private String idMessage;
+	@Column(name = "content")
+	private String content;
+
+	@Column(name = "date")
+	private LocalDate date;
 
 
 	public Message(String content, String author, String idChat) {

@@ -13,17 +13,27 @@ public class Chat {
 	@Column(name = "idchat")
 	private String id;
 
-	private ArrayList<Message> messages = new ArrayList<>();
+	@Column(name = "room")
+	private String room;
 
 	public Chat(String id){
 		this.id = id;
-	}
-
-	public ArrayList<Message> getMessages(){
-		return messages;
+		this.room = id;
 	}
 
 	public String getId() {
 		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getRoom() {
+		return room;
+	}
+
+	public void setRoom(String room) {
+		this.room = room;
 	}
 }

@@ -8,10 +8,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "users")
 public class User {
+
+	@Id
+	@Column(name = "nameuser")
+	private String nameuser;
+
 	@Column(name = "name")
 	private String name;
 
-	@Id
 	@Column(name = "email")
 	private String email;
 
@@ -21,7 +25,8 @@ public class User {
 	public User(){
 	}
 
-	public User(String name, String email, String passwd){
+	public User(String nameuser, String name, String email, String passwd){
+		this.nameuser = nameuser;
 		this.name = name;
 		this.email = email;
 		this.passwd = passwd;
@@ -43,4 +48,11 @@ public class User {
 		this.passwd = passwd;
 	}
 
+	public String getNameuser() {
+		return nameuser;
+	}
+
+	public void setNameuser(String nameuser) {
+		this.nameuser = nameuser;
+	}
 }

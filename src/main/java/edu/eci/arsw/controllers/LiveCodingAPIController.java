@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 @RestController
@@ -45,14 +44,14 @@ public class LiveCodingAPIController {
         System.out.println("Loading file -----------------------------------");
         Room room = null;
         room = rooms.get(idSala);
-        System.out.println("Room File before if : " + room.getLocalFile());
+        System.out.println("Room File before if : " + room.getCode_lines());
         if (room != null) {
-            System.out.println("LocalFile in array :" + rooms.get(idSala).getLocalFile());
-            System.out.println("JSONArray: " + room.getLocalFile().toString());
+            System.out.println("LocalFile in array :" + rooms.get(idSala).getCode_lines());
+            System.out.println("JSONArray: " + room.getCode_lines().toString());
             ArrayList<String> respuesta = new ArrayList<>();
             //Agregar nombre del archivo y líneas
             respuesta.add(room.getNameFile());
-            respuesta.addAll(room.getLocalFile());
+            respuesta.addAll(room.getCode_lines());
             System.out.println("Como se esta enviando...." + respuesta);
             return ResponseEntity.ok(respuesta);
         }
@@ -72,8 +71,8 @@ public class LiveCodingAPIController {
         //Guardar el nombre del archivo
         rooms.get(idSala).setNameFile(textFile.getString(0));
         //Guardar líneas
-        rooms.get(idSala).setLocalFile(localFile);
-        System.out.println("Archivo guardado: " + rooms.get(idSala).getLocalFile());
+        rooms.get(idSala).setCode_lines(localFile);
+        System.out.println("Archivo guardado: " + rooms.get(idSala).getCode_lines());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
