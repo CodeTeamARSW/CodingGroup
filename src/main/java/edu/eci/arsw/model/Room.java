@@ -33,6 +33,9 @@ public class Room {
 
 	private ArrayList<User> members;
 
+	public Room() {
+	}
+
 	public Room(String id, String admin) {
 		this.id = id;
 		this.idChat = id;

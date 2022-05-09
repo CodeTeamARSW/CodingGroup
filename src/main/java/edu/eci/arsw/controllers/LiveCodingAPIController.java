@@ -47,13 +47,14 @@ public class LiveCodingAPIController {
         room = rooms.get(idSala);
         System.out.println("Room File before if : " + room.getLocalFile());
         if (room != null) {
-            //System.out.println("LocalFile:" + room.getLocalFile());
-            //rooms.get(idSala).setLocalFile(new ArrayList<String>(["1"]));
             System.out.println("LocalFile in array :" + rooms.get(idSala).getLocalFile());
             System.out.println("JSONArray: " + room.getLocalFile().toString());
-            System.out.println("Como se esta enviando...." + room.getLocalFile());
-            return ResponseEntity.ok(room.getLocalFile());
-            //return ResponseEntity.ok(new JSONArray(room.getLocalFile()));
+            ArrayList<String> respuesta = new ArrayList<>();
+            //Agregar nombre del archivo y líneas
+            respuesta.add(room.getNameFile());
+            respuesta.addAll(room.getLocalFile());
+            System.out.println("Como se esta enviando...." + respuesta);
+            return ResponseEntity.ok(respuesta);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -64,9 +65,13 @@ public class LiveCodingAPIController {
         System.out.println("body Request: " + body);
         JSONArray textFile = new JSONArray(body);
         ArrayList<String> localFile = new ArrayList<>();
-        for (int i=0; i<textFile.length(); i++) {
+        //Guardando las líneas
+        for (int i = 1; i<textFile.length(); i++) {
             localFile.add(textFile.getString(i));
         }
+        //Guardar el nombre del archivo
+        rooms.get(idSala).setNameFile(textFile.getString(0));
+        //Guardar líneas
         rooms.get(idSala).setLocalFile(localFile);
         System.out.println("Archivo guardado: " + rooms.get(idSala).getLocalFile());
         return new ResponseEntity<>(HttpStatus.OK);

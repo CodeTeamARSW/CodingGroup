@@ -33,10 +33,6 @@ var app = (function () {
         sessionStorage.setItem('idSala', _idsala);
         sessionStorage.setItem('newRoom','no');
         window.location.assign(_local +"/principal.html");
-        /*setTimeout(function(){
-            loadFile();
-        },2000);*/
-        //window.location.assign(_external +"/principal.html");
     };
 
     var goToNewRoom = function(){
@@ -45,18 +41,6 @@ var app = (function () {
         sessionStorage.setItem('idSala', _idsala);
         sessionStorage.setItem('newRoom','yes');
         window.location.assign(_local +"/principal.html");
-        //window.location.assign(_external +"/principal.html");
-        //_user = sessionStorage.getItem('user');
-        //_idsala = sessionStorage.getItem('idSala');
-        /*$.ajax({
-            url: _local+"/livecoding/saveRoom",
-            type: 'POST',
-            data: JSON.stringify({idSala: _idsala, admin: _user}),
-            contentType: "application/json"
-        }).then(function(data){
-            loadFile();
-            console.log("New file---------");
-        });*/
     };
 
     var findLineBlockedByUser = function(user) {
@@ -184,20 +168,32 @@ var app = (function () {
             file = Object.values(data);
         }). then(function(data){
             console.log("File charged --------------------------------------------------------\n", file);
+            console.log("Nombre       --------------------------------------------------------\n", file[0]);
+            $(".file-name").text(file[0]);
+            addContent(file);
         })
         .catch(function(err) {
             console.log("Something bad happens :c..", file);
-            //nameFile = prompt("Enter the name of the file", "HelloWorld.java");
-            //$(".file-name").text( );
         });
     };
 
+
+    var addContent = function(file){
+        //Clean content editable
+        document.getElementById("content").innerHTML = "";
+        for (var i = 1; i < file.length; i++){
+            $("#content").append("<div>"+file[i]+"<br></div>");
+        }
+    };
+
     var saveFile = function() {
-        console.info("Saving file...");
+        console.info("Saving file.....");
         let dataFile = [];        
         let txtArea = document.getElementById("content");
         let children = txtArea.children;
         console.log("Children:", children, " TypeOf", typeof children);
+        //Save name file
+        dataFile.push(sessionStorage.getItem('nameFile'));
         for (var i=0; i<children.length; i++) {
             dataFile.push(children[i].outerText.substring(0, children[i].outerText.length-1));
             console.log(dataFile);
@@ -216,7 +212,6 @@ var app = (function () {
         get_idSala: get_idSala,
 
         init: function() {
-            //_idsala = prompt('Enter the room code: ');
             _user = sessionStorage.getItem('user');
             _idsala = sessionStorage.getItem('idSala');
             //Verifica si es nueva sala o no, Si es nueva guarda, sino Carga archivo
@@ -228,17 +223,14 @@ var app = (function () {
                         data: JSON.stringify({idSala: _idsala, admin: _user}),
                         contentType: "application/json"
                     }).then(function(data){
-                        //loadFile();
                         console.log("New file---------");
                         nameFile = prompt("Enter the name of the file", "HelloWorld.java");
                         $(".file-name").text(nameFile);
                         sessionStorage.setItem('nameFile', nameFile);
-
                     });
             }
             if (sessionStorage.getItem('newRoom') == 'no'){
                 loadFile();
-                $(".file-name").text(sessionStorage.getItem(nameFile));
             }
             connectAndSubscribe();
             appEventsTxtArea.addEventsToTextArea();
