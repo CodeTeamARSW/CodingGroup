@@ -36,7 +36,7 @@ var app = (function () {
     };
 
     var goToNewRoom = function(){
-        _idsala = Math.random().toString(36).substring(7, 15) + Math.random().toString(36).substring(7, 15);
+        _idsala = Math.random().toString(16).substring(7, 15) + Math.random().toString(16).substring(7, 15);
         alert("The id of the room is: " + _idsala);
         sessionStorage.setItem('idSala', _idsala);
         sessionStorage.setItem('newRoom','yes');

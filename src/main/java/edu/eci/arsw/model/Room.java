@@ -19,23 +19,23 @@ public class Room {
 	private String admin;
 
 	//Atributos de Room
-	private String idChat;
+	/*private String idChat;
 
 	private String idFile;
 	private String nameFile;
-	private ArrayList<String> code_lines;
+	private ArrayList<String> code_lines;*/
 
 	public Room() {
 	}
 
-	public Room(String idroom, String admin, String idChat, String idFile, String nameFile, ArrayList<String> code_lines) {
+	/**public Room(String idroom, String admin, String idChat, String idFile, String nameFile, ArrayList<String> code_lines) {
 		this.idroom = idroom;
 		this.admin = admin;
 		this.idChat = idChat;
 		this.idFile = idFile;
 		this.nameFile = nameFile;
 		this.code_lines = code_lines;
-	}
+	}*/
 
 	public Room(String idroom, String admin) {
 		this.idroom = idroom;
@@ -46,7 +46,7 @@ public class Room {
 		return idroom;
 	}
 
-	public String getIdChat() {
+	/*public String getIdChat() {
 		return idChat;
 	}
 
@@ -56,17 +56,17 @@ public class Room {
 
 	public void setCode_lines(ArrayList<String> code_lines) {
 		this.code_lines = code_lines;
-	}
+	}*/
 
 	public String getAdmin() {
 		return admin;
 	}
 
-	public String getNameFile() {
+	/*public String getNameFile() {
 		return nameFile;
 	}
 
 	public void setNameFile(String nameFile) {
 		this.nameFile = nameFile;
-	}
+	}*/
 }

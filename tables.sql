@@ -1,5 +1,13 @@
 --TABLES
 
+drop table code_lines;
+drop table messages;
+drop table files;
+drop table chats;
+drop table rooms;
+drop table users;
+
+
 create table USERS (
   nameuser varchar(20) primary key,
   name varchar(40),
@@ -8,7 +16,7 @@ create table USERS (
 );
 
 create table ROOMS (
-  idroom varchar(10) primary key,
+  idroom varchar(40) primary key,
   admin varchar(40),
   CONSTRAINT fk_room_admin
     FOREIGN KEY(admin)
@@ -16,7 +24,7 @@ create table ROOMS (
 );
 
 create table FILES (
-  idfile varchar(20) primary key,
+  idfile varchar(40) primary key,
   filename varchar(40),
   room varchar(10),
   CONSTRAINT fk_room_file
@@ -25,10 +33,10 @@ create table FILES (
 );
 
 create table CODE_LINES(
-	numline int,
-	idfile varchar(20),
-	code varchar(500),
-	primary key(numline, idfile),
+  idcodeline varchar(60) primary key,
+  numline int,
+  idfile varchar(20),
+  code varchar(500),
   CONSTRAINT fk_file_codelines
     FOREIGN KEY(idfile)
     REFERENCES files(idfile)

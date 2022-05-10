@@ -44,14 +44,14 @@ public class LiveCodingAPIController {
         System.out.println("Loading file -----------------------------------");
         Room room = null;
         room = rooms.get(idSala);
-        System.out.println("Room File before if : " + room.getCode_lines());
+        //System.out.println("Room File before if : " + room.getCode_lines());
         if (room != null) {
-            System.out.println("LocalFile in array :" + rooms.get(idSala).getCode_lines());
-            System.out.println("JSONArray: " + room.getCode_lines().toString());
+           // System.out.println("LocalFile in array :" + rooms.get(idSala).getCode_lines());
+            //System.out.println("JSONArray: " + room.getCode_lines().toString());
             ArrayList<String> respuesta = new ArrayList<>();
             //Agregar nombre del archivo y líneas
-            respuesta.add(room.getNameFile());
-            respuesta.addAll(room.getCode_lines());
+           // respuesta.add(room.getNameFile());
+            //respuesta.addAll(room.getCode_lines());
             System.out.println("Como se esta enviando...." + respuesta);
             return ResponseEntity.ok(respuesta);
         }
@@ -69,10 +69,10 @@ public class LiveCodingAPIController {
             localFile.add(textFile.getString(i));
         }
         //Guardar el nombre del archivo
-        rooms.get(idSala).setNameFile(textFile.getString(0));
+        //rooms.get(idSala).setNameFile(textFile.getString(0));
         //Guardar líneas
-        rooms.get(idSala).setCode_lines(localFile);
-        System.out.println("Archivo guardado: " + rooms.get(idSala).getCode_lines());
+        //rooms.get(idSala).setCode_lines(localFile);
+        //System.out.println("Archivo guardado: " + rooms.get(idSala).getCode_lines());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
