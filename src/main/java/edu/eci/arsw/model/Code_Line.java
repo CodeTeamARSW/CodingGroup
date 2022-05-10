@@ -1,44 +1,31 @@
 package edu.eci.arsw.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "code_lines")
 public class Code_Line {
 
-    @Id
-    @Column(name = "numline")
-    private int numline;
-
-    @Column(name = "idfile")
-    private String idfile;
+    @EmbeddedId
+    private Code_LineID code_lineID;
 
     @Column(name = "code")
     private String code;
 
-    public Code_Line(int numline, String idfile, String code) {
-        this.numline = numline;
-        this.idfile = idfile;
+    public Code_Line() {
+    }
+
+    public Code_Line(Code_LineID code_lineID, String code) {
+        this.code_lineID = code_lineID;
         this.code = code;
     }
 
-    public int getNumline() {
-        return numline;
+    public Code_LineID getCode_lineID() {
+        return code_lineID;
     }
 
-    public void setNumline(int numline) {
-        this.numline = numline;
-    }
-
-    public String getIdfile() {
-        return idfile;
-    }
-
-    public void setIdfile(String idfile) {
-        this.idfile = idfile;
+    public void setCode_lineID(Code_LineID code_lineID) {
+        this.code_lineID = code_lineID;
     }
 
     public String getCode() {

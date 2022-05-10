@@ -28,11 +28,18 @@ public class Room {
 	public Room() {
 	}
 
+	public Room(String idroom, String admin, String idChat, String idFile, String nameFile, ArrayList<String> code_lines) {
+		this.idroom = idroom;
+		this.admin = admin;
+		this.idChat = idChat;
+		this.idFile = idFile;
+		this.nameFile = nameFile;
+		this.code_lines = code_lines;
+	}
+
 	public Room(String idroom, String admin) {
 		this.idroom = idroom;
-		this.idChat = idroom;
 		this.admin = admin;
-		code_lines = new ArrayList<>();
 	}
 
 	public String getIdroom() {
