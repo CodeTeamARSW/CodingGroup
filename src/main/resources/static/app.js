@@ -7,6 +7,11 @@ var app = (function () {
     var _idsala;
     var blockedLines = [];
 
+    var getURL = function(){
+        return _local;
+        //return _external;
+    }
+
     var getStompClient = function(){
         return stompClient;
     };
@@ -200,15 +205,16 @@ var app = (function () {
         };
         $.ajax({
             url: _local+"/livecoding/saveFile/"+_idsala,
-            type: 'PUT',
+            type: 'POST',
             data: JSON.stringify(dataFile),
             contentType: "application/json"
         });
     }
    
     return {
-        getStompClient: getStompClient,
 
+        getURL:getURL,
+        getStompClient: getStompClient,
         get_idSala: get_idSala,
 
         init: function() {
@@ -217,16 +223,29 @@ var app = (function () {
             //Verifica si es nueva sala o no, Si es nueva guarda, sino Carga archivo
             //Nueva:
             if (sessionStorage.getItem('newRoom') == 'yes' ){
+                let txtArea = document.getElementById("content");
+                let codeLine = txtArea.children[0].outerText.substring(0, txtArea.children[0].outerText.length-1);
+                console.log(codeLine);
                 $.ajax({
                         url: _local+"/livecoding/saveRoom",
                         type: 'POST',
-                        data: JSON.stringify({idSala: _idsala, admin: _user}),
+                        data: JSON.stringify({idSala: _idsala, admin: _user, intialLine: codeLine}),
                         contentType: "application/json"
                     }).then(function(data){
                         console.log("New file---------");
                         nameFile = prompt("Enter the name of the file", "HelloWorld.java");
                         $(".file-name").text(nameFile);
                         sessionStorage.setItem('nameFile', nameFile);
+                    }).then(function(){
+                        console.log('<--------Entando al PUT del archivo-------->');
+                        console.log('<--------Valor de .file-name--------> ', $("kbd.file-name").text());
+                        $.ajax({
+                                url: _local+"/livecoding/autoSave/"+_idsala,
+                                type: 'PUT',
+                                data: JSON.stringify([$("kbd.file-name").text(), codeLine]),
+                                contentType: "application/json"
+                            });
+                        console.log('<--------Despues del PUT del archivo-------->');
                     });
             }
             if (sessionStorage.getItem('newRoom') == 'no'){

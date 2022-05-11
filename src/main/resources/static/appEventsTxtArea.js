@@ -37,11 +37,6 @@ var appEventsTxtArea = (function() {
 
     function KeypressEvent(txtArea) {
         txtArea.addEventListener("keypress", (e) => {
-            console.log("<------------------------ Keypress ------------------------")
-            console.log("El div a ver si sirve => ");
-
-            console.log(txtArea.children[numLineSelected].outerHTML);
-
             let codeKeyPressed = e.keyCode;
 
             if (codeKeyPressed != 13 ){
@@ -50,8 +45,22 @@ var appEventsTxtArea = (function() {
                     let body = "{\"event\": \"keypress\", \"html\": \""+txtArea.children[numLineSelected].outerHTML+"\", \"numLine\": \""+numLineSelected+"\", \"user\": \"" + user + "\"}";
                     console.log("Como se esta enviando "+ body);
                     console.log("Enviando el mensaje");
-                    //_stompClient.send('/topic/file.'+_idsala, {},);
                     _stompClient.send('/app/file.'+_idsala, {}, body);
+                    var txt_area = document.getElementById("content");
+                    let codice = txt_area.children;
+                    var temp = Object.values(codice);
+                    let codice_map = [$("kbd.file-name").text()];
+                    console.log("Codice antes del map");
+                    console.log(temp);
+                    temp.forEach(value => codice_map.push(value.outerText.substring(0, value.outerText.length-1)));
+                    console.log("Codice despues del map");
+                    console.log(codice_map);
+                    $.ajax({
+                            url: app.getURL()+"/livecoding/autoSave/"+_idsala,
+                            type: 'PUT',
+                            data: JSON.stringify(codice_map),
+                            contentType: "application/json"
+                        });
                 },100);
             }
 
@@ -88,8 +97,6 @@ var appEventsTxtArea = (function() {
                 _stompClient.send('/app/file.'+_idsala, {}, body);
             }
             console.log("Como se esta enviando "+ body + "########################################################");
-            //_stompClient.send('/topic/file.'+_idsala, {},body);
-            //_stompClient.send('/app/file.'+_idsala, {}, body);
         });
     };
 

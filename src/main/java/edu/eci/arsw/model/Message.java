@@ -1,9 +1,7 @@
 package edu.eci.arsw.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.sql.Date;
 import java.time.LocalDate;
 
 @Entity
@@ -12,7 +10,8 @@ public class Message {
 
 	@Id
 	@Column(name = "idmessage")
-	private String idMessage;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private Integer idMessage;
 
 	@Column(name = "author")
 	private String author;
@@ -24,28 +23,31 @@ public class Message {
 	private String content;
 
 	@Column(name = "date")
-	private LocalDate date;
+	private Date date;
 
 
-	public Message(String content, String author, String idChat) {
-		this.content = content;
-		this.idChat = idChat;
-		this.date = java.time.LocalDate.now();
+	public Message(String author, String idChat, String content) {
 		this.author = author;
+		this.idChat = idChat;
+		this.content = content;
+		this.date = new Date((long) System.currentTimeMillis());
 	}
 
-	public String getContent() {
-		return content;
+	public Integer getIdMessage() {
+		return idMessage;
 	}
 
-	public LocalDate getDate() {
-		return date;
+	public void setIdMessage(Integer idMessage) {
+		this.idMessage = idMessage;
 	}
 
 	public String getAuthor() {
 		return author;
 	}
 
+	public void setAuthor(String author) {
+		this.author = author;
+	}
 
 	public String getIdChat() {
 		return idChat;
@@ -53,5 +55,21 @@ public class Message {
 
 	public void setIdChat(String idChat) {
 		this.idChat = idChat;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 @Entity
 @Table(name = "chats")
 public class Chat {
+
 	@Id
 	@Column(name = "idchat")
 	private String id;
@@ -16,9 +17,12 @@ public class Chat {
 	@Column(name = "room")
 	private String room;
 
-	public Chat(String id){
+	public Chat() {
+	}
+
+	public Chat(String id, String room){
 		this.id = id;
-		this.room = id;
+		this.room = room;
 	}
 
 	public String getId() {

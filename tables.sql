@@ -44,14 +44,14 @@ create table CODE_LINES(
 
 create table CHATS (
   idChat varchar(40) primary key,
-  room varchar(10),
+  room varchar(40),
   CONSTRAINT fk_room_file
     FOREIGN KEY(room)
     REFERENCES rooms(idroom)
 );
 
 create table MESSAGES (
-  idMessage varchar(40) primary key,
+  idMessage integer primary key,
   author varchar(40),
   idChat varchar(40),
   content varchar(400),
