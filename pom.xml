@@ -91,6 +91,13 @@
 		  <version>20220320</version>
 	  </dependency>
 
+	  <dependency>
+		  <groupId>com.azure</groupId>
+		  <artifactId>azure-cosmos</artifactId>
+		  <version>LATEST</version>
+	  </dependency>
+
+
   </dependencies>
   
     <build>

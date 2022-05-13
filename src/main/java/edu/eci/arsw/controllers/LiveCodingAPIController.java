@@ -1,5 +1,6 @@
 package edu.eci.arsw.controllers;
 
+import edu.eci.arsw.logger.LiveCodingLog;
 import edu.eci.arsw.model.Message;
 import edu.eci.arsw.model.Room;
 import edu.eci.arsw.service.LiveCodingService;
@@ -22,6 +23,8 @@ public class LiveCodingAPIController {
 
     @Autowired
     LiveCodingService lcs;
+    @Autowired
+    LiveCodingLog lcl;
 
     @RequestMapping(value = "/users", method=RequestMethod.GET)
     public ResponseEntity getAllUsers(){
