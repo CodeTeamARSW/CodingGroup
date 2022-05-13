@@ -192,7 +192,7 @@ var app = (function () {
             console.log("En 0 ..." + chats[0]);
             console.log("En 0 0 ..." +chats[0][0]);
 
-            for (var i=0; chats.length; i++){
+            for (var i=0; i < chats.length; i++){
                 $("#table-chat tbody").append("<tr><td>" +chats[i][0] + ": "+ chats[i][1] + "</td></tr>");
            }
         })
