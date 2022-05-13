@@ -13,6 +13,24 @@ var appEventsTxtArea = (function() {
         KeyupEvent(txt_area[0]);
     };
 
+    function updateAndSaveFile(){
+        var txt_area = document.getElementById("content");
+        let codice = txt_area.children;
+        var temp = Object.values(codice);
+        let codice_map = [$("kbd.file-name").text()];
+        console.log("Codice antes del map");
+        console.log(temp);
+        temp.forEach(value => codice_map.push(value.outerText.substring(0, value.outerText.length-1)));
+        console.log("Codice despues del map");
+        console.log(codice_map);
+        $.ajax({
+                url: app.getURL()+"/livecoding/autoSave/"+_idsala,
+                type: 'PUT',
+                data: JSON.stringify(codice_map),
+                contentType: "application/json"
+            });
+    }
+
     function clickEvent(txtArea){
         txtArea.addEventListener('click', (e) => {
             let divSelected = e.target;
@@ -46,21 +64,7 @@ var appEventsTxtArea = (function() {
                     console.log("Como se esta enviando "+ body);
                     console.log("Enviando el mensaje");
                     _stompClient.send('/app/file.'+_idsala, {}, body);
-                    var txt_area = document.getElementById("content");
-                    let codice = txt_area.children;
-                    var temp = Object.values(codice);
-                    let codice_map = [$("kbd.file-name").text()];
-                    console.log("Codice antes del map");
-                    console.log(temp);
-                    temp.forEach(value => codice_map.push(value.outerText.substring(0, value.outerText.length-1)));
-                    console.log("Codice despues del map");
-                    console.log(codice_map);
-                    $.ajax({
-                            url: app.getURL()+"/livecoding/autoSave/"+_idsala,
-                            type: 'PUT',
-                            data: JSON.stringify(codice_map),
-                            contentType: "application/json"
-                        });
+                    updateAndSaveFile();
                 },100);
             }
 
@@ -92,6 +96,7 @@ var appEventsTxtArea = (function() {
             if (codeKeyPressed == 8) {
                 body = "{\"event\": \"keyup\", \"code\": \""+codeKeyPressed+"\", \"html\": \""+txtArea.children[numLineSelected].outerHTML+"\", \"numLine\": \""+numLineSelected+"\", \"user\": \"" + user + "\"}";
                 _stompClient.send('/app/file.'+_idsala, {}, body);
+                updateAndSaveFile();
             } else if (codeKeyPressed == 13 || codeKeyPressed == 38 || codeKeyPressed == 40) {
                 body = "{\"event\": \"keyup\", \"code\": \""+codeKeyPressed+"\", \"numLine\": \""+numLineSelected+"\", \"user\": \"" + user + "\"}";
                 _stompClient.send('/app/file.'+_idsala, {}, body);

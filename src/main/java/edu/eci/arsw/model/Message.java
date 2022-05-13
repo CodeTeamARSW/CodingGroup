@@ -22,15 +22,14 @@ public class Message {
 	@Column(name = "content")
 	private String content;
 
-	@Column(name = "date")
-	private Date date;
 
+	public Message() {
+	}
 
 	public Message(String author, String idChat, String content) {
 		this.author = author;
 		this.idChat = idChat;
 		this.content = content;
-		this.date = new Date((long) System.currentTimeMillis());
 	}
 
 	public Integer getIdMessage() {
@@ -65,11 +64,4 @@ public class Message {
 		this.content = content;
 	}
 
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
 }

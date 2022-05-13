@@ -1,5 +1,6 @@
 package edu.eci.arsw.controllers;
 
+import edu.eci.arsw.model.Message;
 import edu.eci.arsw.model.Room;
 import edu.eci.arsw.service.LiveCodingService;
 import org.json.JSONArray;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/livecoding")
@@ -63,16 +65,22 @@ public class LiveCodingAPIController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "/saveFile/{idSala}", method = RequestMethod.POST)
-    public ResponseEntity saveFile(@PathVariable String idSala, @RequestBody String body) {
+    @RequestMapping(value= "/loadChat/{idSala}", method = RequestMethod.GET)
+    public ResponseEntity loadChat(@PathVariable String idSala){
+        List<Object[]> messages = lcs.searchMessages(idSala);
+        return ResponseEntity.ok(messages);
+    }
+
+    @RequestMapping(value = "/saveFile/{idSala}", method = RequestMethod.GET)
+    public ResponseEntity saveFile(@PathVariable String idSala) {
         System.out.println("\n Recibiendo petición POST a '/saveFile/{idSala}'");
-        System.out.println("body Request: " + body);
-        JSONArray textFile = new JSONArray(body);
+        /**JSONArray textFile = new JSONArray(body);
         ArrayList<String> localFile = new ArrayList<>();
         //Guardando las líneas
         for (int i = 1; i<textFile.length(); i++) {
             localFile.add(textFile.getString(i));
-        }
+        }**/
+        lcs.persistentFile(idSala);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -98,6 +106,16 @@ public class LiveCodingAPIController {
         lcs.setLocalFileByIDRoom(idSala, update);
         System.out.println("<-----------ARCHIVO DESPUES DEL UPDATE------------->");
         System.out.println(update);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/autoSaveMessage/{idSala}", method = RequestMethod.PUT)
+    public ResponseEntity autoSaveMessage(@PathVariable String idSala, @RequestBody String body) {
+        System.out.println("Recibiendo petición PUT para message");
+        System.out.println(body);
+        JSONObject message = new JSONObject(body);
+        lcs.setMessageByIDRoom(idSala, message);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

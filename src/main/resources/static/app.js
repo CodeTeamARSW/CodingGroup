@@ -182,7 +182,24 @@ var app = (function () {
         });
     };
 
+    var loadChat = function(){
+        var chats;
+        $.get("/livecoding/loadChat/"+_idsala, function(data) {
+            console.log("Mensajes cargados..." + data);
+            chats = Object.values(data);
+        }). then(function(data){
+            console.log("Messages charged --------------------------------------------------------\n", chats);
+            console.log("En 0 ..." + chats[0]);
+            console.log("En 0 0 ..." +chats[0][0]);
 
+            for (var i=0; chats.length; i++){
+                $("#table-chat tbody").append("<tr><td>" +chats[i][0] + ": "+ chats[i][1] + "</td></tr>");
+           }
+        })
+        .catch(function(err) {
+            console.log("Something bad happens in chat :c..", chats);
+        });
+    }
     var addContent = function(file){
         //Clean content editable
         document.getElementById("content").innerHTML = "";
@@ -193,20 +210,9 @@ var app = (function () {
 
     var saveFile = function() {
         console.info("Saving file.....");
-        let dataFile = [];        
-        let txtArea = document.getElementById("content");
-        let children = txtArea.children;
-        console.log("Children:", children, " TypeOf", typeof children);
-        //Save name file
-        dataFile.push(sessionStorage.getItem('nameFile'));
-        for (var i=0; i<children.length; i++) {
-            dataFile.push(children[i].outerText.substring(0, children[i].outerText.length-1));
-            console.log(dataFile);
-        };
         $.ajax({
             url: _local+"/livecoding/saveFile/"+_idsala,
-            type: 'POST',
-            data: JSON.stringify(dataFile),
+            type: 'GET',
             contentType: "application/json"
         });
     }
@@ -250,6 +256,7 @@ var app = (function () {
             }
             if (sessionStorage.getItem('newRoom') == 'no'){
                 loadFile();
+                loadChat();
             }
             connectAndSubscribe();
             appEventsTxtArea.addEventsToTextArea();

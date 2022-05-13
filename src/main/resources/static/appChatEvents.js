@@ -3,17 +3,24 @@ var appChatEvents = (function () {
 
 
     var addMessage = function(){
-
             _stompClient = app.getStompClient();
             _idsala = app.get_idSala();
             _user = sessionStorage.getItem('user');
             _content = document.getElementById('entry-chat').value;
             _stompClient.send('/app/message.'+_idsala, {}, "{\"event\": \"message\", \"content\": \""+_content+"\", \"user\": \"" + _user + "\"}");
             $('#entry-chat').val("");
+            //Enviar mensaje
+            _message = {idRoom: _idsala, content: _content, user: _user};
+
+            $.ajax({
+                    url: app.getURL()+"/livecoding/autoSaveMessage/"+_idsala,
+                    type: 'PUT',
+                    data: JSON.stringify(_message),
+                    contentType: "application/json"
+                });
     };
 
     var addComment = function(){
-
             _stompClient = app.getStompClient();
             _idsala = app.get_idSala();
             _user = sessionStorage.getItem('user');
