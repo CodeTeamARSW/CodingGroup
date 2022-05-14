@@ -1,9 +1,10 @@
 package edu.eci.arsw.service;
 
+import edu.eci.arsw.logger.Event;
+import edu.eci.arsw.logger.LogThread;
 import edu.eci.arsw.model.*;
 import edu.eci.arsw.repository.*;
 import org.apache.tomcat.util.digester.ArrayStack;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -20,26 +21,32 @@ public class LiveCodingService {
 
     //Conexiones a los mapeos de la DB
     private final UserRepository userRepository;
+
     private final MessageRepository messageRepository;
+
     private final ChatRepository chatRepository;
+
     private final RoomRepository roomRepository;
 
     private final CodeLineRepository codelineRepository;
 
     private final FileRepository fileRepository;
 
+    private final EventRepository eventRepository;
+
     private HashMap<String, ArrayList<String>> files = new HashMap<>();
     private HashMap<String, ArrayList<String>> chats = new HashMap<>();
 
 
 
-    public LiveCodingService(UserRepository userRepository, ChatRepository chatRepository, MessageRepository messageRepository, RoomRepository roomRepository, CodeLineRepository codelineRepository, FileRepository fileRepository){
+    public LiveCodingService(UserRepository userRepository, ChatRepository chatRepository, MessageRepository messageRepository, RoomRepository roomRepository, CodeLineRepository codelineRepository, FileRepository fileRepository, EventRepository eventRepository){
         this.userRepository = userRepository;
         this.chatRepository = chatRepository;
         this.messageRepository = messageRepository;
         this.roomRepository = roomRepository;
         this.codelineRepository = codelineRepository;
         this.fileRepository = fileRepository;
+        this.eventRepository = eventRepository;
     }
 
     public List<User> getAllUsers(){
@@ -124,5 +131,13 @@ public class LiveCodingService {
         return list1;
     }
 
+    public void saveEventLog(String idRoom, String activity, String user, String type){
+        System.out.println("<== Inicializando el hilo ==>");
+        LogThread lt = new LogThread(idRoom, activity, user, type);//, eventRepository);
+        lt.start();
+    }
 
+    public EventRepository getEventRepository() {
+        return eventRepository;
+    }
 }

@@ -1,6 +1,6 @@
 package edu.eci.arsw.controllers;
 
-import edu.eci.arsw.logger.LiveCodingLog;
+import edu.eci.arsw.logger.LogThread;
 import edu.eci.arsw.model.Room;
 import edu.eci.arsw.service.LiveCodingService;
 import org.json.JSONArray;
@@ -22,8 +22,6 @@ public class LiveCodingAPIController {
 
     @Autowired
     LiveCodingService lcs;
-    @Autowired
-    LiveCodingLog lcl;
 
     /**
      * It receives a POST request with a JSON object containing the room's ID, the admin's ID and the initial line of code.
@@ -39,7 +37,7 @@ public class LiveCodingAPIController {
         System.out.println("Entrando en /saveRoom -> " + textFile +" "+ textFile.get("idSala") +" "+ textFile.get("admin"));
         Room room = lcs.initRoom((String) textFile.get("idSala"), (String) textFile.get("admin"), (String) textFile.get("intialLine"));
         rooms.put((String) textFile.get("idSala"), room);
-        lcl.createEvent(textFile.getString("idSala"), "Create new room for cooperative coding", textFile.getString("admin"), "info");
+        lcs.saveEventLog(textFile.getString("idSala"), "Create new room for cooperative coding", textFile.getString("admin"), "info");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -112,14 +110,6 @@ public class LiveCodingAPIController {
         System.out.println(body);
         JSONObject message = new JSONObject(body);
         lcs.setMessageByIDRoom(idSala, message);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/saveCache/{idSala}", method = RequestMethod.GET)
-    public ResponseEntity saveCacheLogs(@PathVariable String idSala) throws Exception {
-        System.out.println("<============ Entrando a metodo GET saveCache ===============>");
-        lcl.saveIntoDB(idSala);
-        System.out.println("<============ Despues de guardar en la base NoSQL ============>");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

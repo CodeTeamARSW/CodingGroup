@@ -1,20 +1,37 @@
 package edu.eci.arsw.logger;
 
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.HashMap;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 @Service
 /**
- * LiveCodingLog is a class that represents a log of live coding events.
+ * LogThread is a class that represents a log of live coding events.
  */
-public class LiveCodingLog {
+public class LogThread extends Thread{
 
-    public void saveIntoDB(String idRoom) throws Exception {
+    private Event event;
+
+    public LogThread(){
+
     }
 
-    public void createEvent(String idRoom, String activity, String user, String type){
-        Event evt = new Event(activity,user,type);
+    public LogThread(String idRoom, String activity, String user, String type){
+        this.event = new Event(idRoom, activity, user, type);
+    }
+
+    @Override
+    public void run(){
+        System.out.println("<================= Se entro al run del hilo ==================>");
+        System.out.println(event.toString());
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Persistence" );
+        EntityManager entitymanager = emfactory.createEntityManager();
+        entitymanager.getTransaction().begin();
+        entitymanager.persist(event);
+        entitymanager.getTransaction().commit();
+        System.out.println("<================= Finalizo el run del hilo ==================>");
     }
 
 }

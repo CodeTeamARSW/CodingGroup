@@ -10,7 +10,7 @@ public class Message {
 
 	@Id
 	@Column(name = "idmessage")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)//, generator = "messages_sequence")
 	private Integer idMessage;
 
 	@Column(name = "author")
