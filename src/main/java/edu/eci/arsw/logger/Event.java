@@ -10,8 +10,6 @@ public class Event {
     String user;
     String type;
 
-
-
     // A constructor of the class Event.
     public Event( String activity, String user, String type){
         this.date = LocalDateTime.now();
@@ -20,5 +18,13 @@ public class Event {
         this.type = type;
     }
 
-
+    @Override
+    public String toString() {
+        return "Event{" +
+                "date=" + date +
+                ", activity='" + activity + '\'' +
+                ", user='" + user + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

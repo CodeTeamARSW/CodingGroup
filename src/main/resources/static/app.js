@@ -215,6 +215,11 @@ var app = (function () {
             type: 'GET',
             contentType: "application/json"
         });
+        $.ajax({
+            url: _local+"/livecoding/saveCache/"+_idsala,
+            type: 'GET',
+            contentType: "application/json"
+        });
     }
    
     return {

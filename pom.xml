@@ -91,11 +91,18 @@
 		  <version>20220320</version>
 	  </dependency>
 
-	  <dependency>
+	  <!--dependency>
 		  <groupId>com.azure</groupId>
 		  <artifactId>azure-cosmos</artifactId>
 		  <version>LATEST</version>
+	  </dependency-->
+
+	  <dependency>
+		  <groupId>com.microsoft.azure</groupId>
+		  <artifactId>azure-cosmos</artifactId>
+		  <version>3.7.6</version>
 	  </dependency>
+
 
 
   </dependencies>
