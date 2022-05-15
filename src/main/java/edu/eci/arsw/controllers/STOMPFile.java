@@ -14,12 +14,7 @@ public class STOMPFile {
 
     @MessageMapping("/file.{idroom}")
     public void handleMessageEvent(String message,  @DestinationVariable String idroom){
-        System.out.println("------------Entro en STOMP---------- ");
-        System.out.println("Mensaje  " + message);
         smt.convertAndSend("/topic/file."+idroom, message);
-
-        //Mirar el caso para guardar en la base de datos
-
     }
 
 }

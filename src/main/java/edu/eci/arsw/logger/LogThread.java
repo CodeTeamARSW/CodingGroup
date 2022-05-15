@@ -24,14 +24,11 @@ public class LogThread extends Thread{
 
     @Override
     public void run(){
-        System.out.println("<================= Se entro al run del hilo ==================>");
-        System.out.println(event.toString());
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Persistence" );
         EntityManager entitymanager = emfactory.createEntityManager();
         entitymanager.getTransaction().begin();
         entitymanager.persist(event);
         entitymanager.getTransaction().commit();
-        System.out.println("<================= Finalizo el run del hilo ==================>");
     }
 
 }

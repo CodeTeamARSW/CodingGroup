@@ -6,7 +6,6 @@ var appEventsTxtArea = (function() {
 
     function addEventsToTextArea() {
         var txt_area = $('#content');
-        console.log(txt_area[0]);
 
         clickEvent(txt_area[0]);
         KeypressEvent(txt_area[0]);
@@ -18,11 +17,7 @@ var appEventsTxtArea = (function() {
         let codice = txt_area.children;
         var temp = Object.values(codice);
         let codice_map = [$("kbd.file-name").text()];
-        console.log("Codice antes del map");
-        console.log(temp);
         temp.forEach(value => codice_map.push(value.outerText.substring(0, value.outerText.length-1)));
-        console.log("Codice despues del map");
-        console.log(codice_map);
         $.ajax({
                 url: app.getURL()+"/livecoding/autoSave/"+_idsala,
                 type: 'PUT',
@@ -61,8 +56,6 @@ var appEventsTxtArea = (function() {
                 setTimeout(function(){
                     var user = sessionStorage.getItem('user');
                     let body = "{\"event\": \"keypress\", \"html\": \""+txtArea.children[numLineSelected].outerHTML+"\", \"numLine\": \""+numLineSelected+"\", \"user\": \"" + user + "\"}";
-                    console.log("Como se esta enviando "+ body);
-                    console.log("Enviando el mensaje");
                     _stompClient.send('/app/file.'+_idsala, {}, body);
                     updateAndSaveFile();
                 },100);
@@ -75,9 +68,6 @@ var appEventsTxtArea = (function() {
         txtArea.addEventListener("keyup", (e) => {
             let codeKeyPressed = e.keyCode;
             let characterPressed = String.fromCharCode(codeKeyPressed);
-            console.log("Keyup Event -------------------------");
-            console.log("codeKeyPressed:", codeKeyPressed);
-            console.log("CharacterPressed:", characterPressed);
             if (codeKeyPressed == 13){
                 numLineSelected++;
             } else if (codeKeyPressed == 38) {
@@ -85,7 +75,6 @@ var appEventsTxtArea = (function() {
                     numLineSelected--;
                 }
             } else if (codeKeyPressed == 40) {
-                console.log("txtArea.children.length: " + txtArea.children.length);
                 if (numLineSelected != txtArea.children.length) {
                     numLineSelected++;
                 }
@@ -101,7 +90,6 @@ var appEventsTxtArea = (function() {
                 body = "{\"event\": \"keyup\", \"code\": \""+codeKeyPressed+"\", \"numLine\": \""+numLineSelected+"\", \"user\": \"" + user + "\"}";
                 _stompClient.send('/app/file.'+_idsala, {}, body);
             }
-            console.log("Como se esta enviando "+ body + "########################################################");
         });
     };
 

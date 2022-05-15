@@ -1,7 +1,5 @@
 package edu.eci.arsw.controllers;
 
-import edu.eci.arsw.logger.Event;
-import edu.eci.arsw.logger.LogThread;
 import edu.eci.arsw.model.Room;
 import edu.eci.arsw.service.LiveCodingService;
 import org.json.JSONArray;
@@ -33,9 +31,7 @@ public class LiveCodingAPIController {
      */
     @RequestMapping(value = "/saveRoom", method=RequestMethod.POST)
     public ResponseEntity savRoomId(@RequestBody String body) {
-        System.out.println("\n Recibiendo petición POST a '/saveRoom'");
         JSONObject textFile = new JSONObject(body);
-        System.out.println("Entrando en /saveRoom -> " + textFile +" "+ textFile.get("idSala") +" "+ textFile.get("admin"));
         Room room = lcs.initRoom((String) textFile.get("idSala"), (String) textFile.get("admin"), (String) textFile.get("intialLine"));
         rooms.put((String) textFile.get("idSala"), room);
         lcs.saveEventLog(textFile.getString("idSala"), "Create new room for cooperative coding", textFile.getString("admin"), "INFO");
@@ -50,11 +46,8 @@ public class LiveCodingAPIController {
      */
     @RequestMapping(value = "/loadFile/{idSala}", method = RequestMethod.GET)
     public ResponseEntity loadFileRoom(@PathVariable String idSala){
-        System.out.println("\n Recibiendo petición GET a '/loadFile/{idSala}'");
-        System.out.println("Loading file -----------------------------------");
         ArrayList<String> fileRoom = lcs.getLocalFileByIDRoom(idSala);
         if (fileRoom != null) {
-            System.out.println("LocalFile in array :" + fileRoom);
             return ResponseEntity.ok(fileRoom);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -68,7 +61,6 @@ public class LiveCodingAPIController {
 
     @RequestMapping(value = "/saveFile/{idSala}", method = RequestMethod.GET)
     public ResponseEntity saveFile(@PathVariable String idSala) {
-        System.out.println("\n Recibiendo petición POST a '/saveFile/{idSala}'");
         lcs.persistentFile(idSala);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -82,27 +74,18 @@ public class LiveCodingAPIController {
      */
     @RequestMapping(value = "/autoSave/{idSala}", method = RequestMethod.PUT)
     public ResponseEntity autoSave(@PathVariable String idSala, @RequestBody String body) {
-        System.out.println("\n Recibiendo petición PUT a '/autoSave/{idsala}'");
-        System.out.println("<- Antes del JSONArray ->");
-        System.out.println(body);
         JSONArray file = new JSONArray(body);
-        System.out.println("<- Despues del JSONArray en la posi 0 ->");
-        System.out.println(file.getString(0));
         ArrayList<String> update = new ArrayList<>();
         for (int i  = 0; i<file.length(); i++){
             update.add(file.getString(i));
         }
         lcs.setLocalFileByIDRoom(idSala, update);
-        System.out.println("<-----------ARCHIVO DESPUES DEL UPDATE------------->");
-        System.out.println(update);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
     @RequestMapping(value = "/autoSaveMessage/{idSala}", method = RequestMethod.PUT)
     public ResponseEntity autoSaveMessage(@PathVariable String idSala, @RequestBody String body) {
-        System.out.println("Recibiendo petición PUT para message");
-        System.out.println(body);
         JSONObject message = new JSONObject(body);
         lcs.setMessageByIDRoom(idSala, message);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -111,12 +94,6 @@ public class LiveCodingAPIController {
     @RequestMapping(value = "/registryLogs/{idSala}", method = RequestMethod.POST)
     public ResponseEntity registerLog(@PathVariable String idSala, @RequestBody String body){
         JSONObject log = new JSONObject(body);
-        System.out.println("Creando un nuevo Log con el metodo POST");
-        System.out.println(idSala);
-        System.out.println(log.getString("activity"));
-        System.out.println(log.getString("user"));
-        System.out.println(log.getString("type"));
-        System.out.println("<======= Terminando de revisar las variables del body =======>");
         lcs.saveEventLog(idSala, log.getString("activity"), log.getString("user"), log.getString("type"));
         return new ResponseEntity(HttpStatus.OK);
     }

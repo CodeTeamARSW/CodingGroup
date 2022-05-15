@@ -85,8 +85,6 @@ public class LiveCodingService {
      */
     public void setLocalFileByIDRoom(String idRoom, ArrayList<String> localFile) {
         files.replace(idRoom, localFile);
-
-        System.out.println(files.get(idRoom));
     }
 
     /**
@@ -125,7 +123,6 @@ public class LiveCodingService {
     }
 
     public void saveEventLog(String idRoom, String activity, String user, String type){
-        System.out.println("<== Inicializando el hilo ==>");
         LogThread lt = new LogThread(idRoom, activity, user, type);
         lt.start();
     }

@@ -65,7 +65,6 @@ var app = (function () {
                 indexTemp = index;
             }
         });
-        console.log("Dato en la posición " + indexTemp + "/////////////////////////////////////////////////////////")
         return indexTemp;
     }
 
@@ -95,15 +94,12 @@ var app = (function () {
                 let json = JSON.parse(eventbody.body);
                 let event = json.event;
                 if (event == 'message' ){
-                    console.log("Recibiendo el mensaje.......");
-                    console.log(json.content);
                     $("#table-chat tbody").append("<tr><td>" +json.user + ": "+ json.content + "</td></tr>");
                     $(".chat").animate({ scrollTop: $('.chat')[0].scrollHeight}, 1000);
                 } else if (event == 'comment') {
                     $("#table-comment tbody").append("<tr><td>" + json.user + ": (Linea " + json.numLineCode +") " + json.content + "</td></tr>")
                     $(".comments").animate({ scrollTop: $('.comments')[0].scrollHeight}, 1000);
                     // Se resalta lalinea seleccionada del comentario
-                    console.log("TXT área ", txtArea.children[json.numLineCode-1]);
                     txtArea.children[json.numLineCode-1].setAttribute("style", "background-color:#fc303054;");
                 }
             });
@@ -113,61 +109,41 @@ var app = (function () {
                 let json = JSON.parse(eventbody.body);
                 let event = json.event;
 
-                console.log("Mensaje Recibido:\n", json);
                 if(event == "click" && (_user != json.user)){
                     let pos = findLineBlockedByUser(json.user);
                     if (pos != undefined) {
                         blockedLines.splice(pos, 1);
                     }
                     blockedLines.push(new blockedLine(json.numLine, json.user));
-                    console.log("Num line: " + json.numLine);
-                    console.log(txtArea.children[json.numLine]);
-                    console.log("Línea seleccionada "+ txtArea.children[json.numLine].outerHTML);
                 } else if (event == "keypress" && (_user != json.user)){
                     txtArea.children[json.numLine].outerHTML = json.html;
-                    // console.log(txtArea.children[json.numLine].outerHTML);
                 }else if (event == "keyup" && (_user != json.user)){
                     // Tecla Enter
                     if (json.code == 13) {
-                        console.log("Tecla Enter oprimida en la línea " + json.numLine);
                         let newdiv = document.createElement("div");
                         newdiv.innerHTML = "<br>";
                         txtArea.children[json.numLine-1].insertAdjacentElement("afterend", newdiv);
-                        console.log(txtArea.children[json.numLine]);
-                        console.log(newdiv);
                     }
                     // Flecha Up
                     if (json.code == 38) {
-                        console.log("Flecha Up oprimida");
-                        console.log("Usuario " + json.user + " saltó de la línea " + (json.numLine + 1) + " a la linea " + json.numLine);
-                        console.log("blockedLines (Antes) -> " + blockedLines);
                         let pos = findLineBlockedByUser(json.user);
                         if (pos != undefined) {
                             blockedLines.splice(pos, 1);
                         }
                         blockedLines.push(new blockedLine(json.numLine, json.user));
-                        console.log("blockedLines (Después) -> " + blockedLines);
                     }
 
                     // Flecha Down
                     if (json.code == 40) {
-                        console.log("Flecha Down oprimida");
-                        console.log("Usuario " + json.user + " saltó de la línea " + (json.numLine - 1) + " a la linea " + json.numLine);
-                        console.log("blockedLines (Antes) -> " + blockedLines);
                         let pos = findLineBlockedByUser(json.user);
                         if (pos != undefined) {
                             blockedLines.splice(pos, 1);
                         }
                         blockedLines.push(new blockedLine(json.numLine, json.user));
-                        console.log("blockedLines (Después) -> " + blockedLines);
                     }
 
                     // Tecla Del
                     if (json.code == 8) {
-                        console.log("DEL: json.numLine: " + json.numLine);
-                        console.log("DEL: OBJ: " + txtArea.children[json.numLine]);
-                        console.log("DEL: outerHTML: " + txtArea.children[json.numLine].outerHTML);
-                        console.log("json.html: " + json.html);
                         txtArea.children[json.numLine].outerHTML = json.html;
                     }
                 }
@@ -176,19 +152,14 @@ var app = (function () {
     };
 
     var loadFile = function() {
-        console.info("Loading file...");
         var file;
         $.get("/livecoding/loadFile/"+_idsala, function(data) {
-            console.log("DATA file  cargado..." + data);
             file = Object.values(data);
         }). then(function(data){
-            console.log("File charged --------------------------------------------------------\n", file);
-            console.log("Nombre       --------------------------------------------------------\n", file[0]);
             $(".file-name").text(file[0]);
             addContent(file);
         })
         .catch(function(err) {
-            console.log("Something bad happens :c..", file);
         });
     };
 
@@ -230,8 +201,7 @@ var app = (function () {
     var validateAccess = function() {
         if (sessionStorage.getItem('user') == null){
             window.location.replace(_local + "/html/404.html");
-            console.log("Redirigir a pagina de error 404");
-        };
+        }
     };
    
     return {
@@ -244,8 +214,6 @@ var app = (function () {
 
         errorLoad: function(){
             $.get("http://api.ipify.org/?format=json", function(data){
-                console.log(data);
-                console.log("Attempt to unathorized access to application " + data.ip);
                 return data;
             }).then(function(data){
                 $.ajax({
@@ -267,27 +235,22 @@ var app = (function () {
                 if (sessionStorage.getItem('newRoom') == 'yes' ){
                     let txtArea = document.getElementById("content");
                     let codeLine = txtArea.children[0].outerText.substring(0, txtArea.children[0].outerText.length-1);
-                    console.log(codeLine);
                     $.ajax({
                             url: _local+"/livecoding/saveRoom",
                             type: 'POST',
                             data: JSON.stringify({idSala: _idsala, admin: _user, intialLine: codeLine}),
                             contentType: "application/json"
                         }).then(function(data){
-                            console.log("New file---------");
                             nameFile = prompt("Enter the name of the file", "HelloWorld.java");
                             $(".file-name").text(nameFile);
                             sessionStorage.setItem('nameFile', nameFile);
                         }).then(function(){
-                            console.log('<--------Entando al PUT del archivo-------->');
-                            console.log('<--------Valor de .file-name--------> ', $("kbd.file-name").text());
                             $.ajax({
                                     url: _local+"/livecoding/autoSave/"+_idsala,
                                     type: 'PUT',
                                     data: JSON.stringify([$("kbd.file-name").text(), codeLine]),
                                     contentType: "application/json"
                                 });
-                            console.log('<--------Despues del PUT del archivo-------->');
                         });
                 }
                 if (sessionStorage.getItem('newRoom') == 'no'){
