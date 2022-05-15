@@ -84,3 +84,5 @@ nb-configuration.xml
 .DS_Store
 
 Models.asta.lock
+
+NODE1_key.pem

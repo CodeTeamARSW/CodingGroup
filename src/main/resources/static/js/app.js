@@ -1,6 +1,6 @@
 var app = (function () {
     _local = "http://localhost:8080";
-    _external = "https://livecoding-gpv.herokuapp.com";
+    _external = "20.213.66.171:8080";
     var _user;
     var _password;
     var stompClient = null;
@@ -8,7 +8,7 @@ var app = (function () {
     var blockedLines = [];
 
     var getURL = function(){
-        return _local;
+        return _external;
         //return _external;
     }
 
@@ -32,8 +32,7 @@ var app = (function () {
         }else{
             //Guardando usuario
             sessionStorage.setItem('user', _user);
-            window.location.replace(_local + "/html/home.html");
-            //window.location.replace(_external + "/html/home.html");
+            window.location.replace(_external + "/html/home.html");
         }
     };
 
@@ -41,9 +40,9 @@ var app = (function () {
         _idsala = prompt('Enter the room code: ');
         sessionStorage.setItem('idSala', _idsala);
         sessionStorage.setItem('newRoom','no');
-        window.location.assign(_local +"/html/principal.html");
+        window.location.assign(_external +"/html/principal.html");
         $.ajax({
-            url: _local+"/livecoding/registryLogs/"+_idsala,
+            url: _external+"/livecoding/registryLogs/"+_idsala,
             type: 'POST',
             data: JSON.stringify({user: sessionStorage.getItem('user'), activity: "Access to the room: " + _idsala, type: "INFO"}),
             contentType: "application/json"
@@ -55,7 +54,7 @@ var app = (function () {
         alert("The id of the room is: " + _idsala);
         sessionStorage.setItem('idSala', _idsala);
         sessionStorage.setItem('newRoom','yes');
-        window.location.assign(_local +"/html/principal.html");
+        window.location.assign(_external +"/html/principal.html");
     };
 
     var findLineBlockedByUser = function(user) {
@@ -186,12 +185,12 @@ var app = (function () {
 
     var saveFile = function() {
         $.ajax({
-            url: _local+"/livecoding/saveFile/"+_idsala,
+            url: _external+"/livecoding/saveFile/"+_idsala,
             type: 'GET',
             contentType: "application/json"
         });
         $.ajax({
-            url: _local+"/livecoding/registryLogs/"+_idsala,
+            url: _external+"/livecoding/registryLogs/"+_idsala,
             type: 'POST',
             data: JSON.stringify({user: _user, activity: "The user " + _user + " has made changes to the file " + $("#file-name").text(), type: "INFO"}),
             contentType: "application/json"
@@ -200,7 +199,7 @@ var app = (function () {
 
     var validateAccess = function() {
         if (sessionStorage.getItem('user') == null){
-            window.location.replace(_local + "/html/404.html");
+            window.location.replace(_external + "/html/404.html");
         }
     };
    
@@ -217,7 +216,7 @@ var app = (function () {
                 return data;
             }).then(function(data){
                 $.ajax({
-                    url: _local+"/livecoding/registryLogs/eventWarning",
+                    url: _external+"/livecoding/registryLogs/eventWarning",
                     type: 'POST',
                     data: JSON.stringify({user: "warning_user", activity: "Attempt to unathorized access to application " + data.ip, type: "WARNING"}),
                     contentType: "application/json"
@@ -236,7 +235,7 @@ var app = (function () {
                     let txtArea = document.getElementById("content");
                     let codeLine = txtArea.children[0].outerText.substring(0, txtArea.children[0].outerText.length-1);
                     $.ajax({
-                            url: _local+"/livecoding/saveRoom",
+                            url: _external+"/livecoding/saveRoom",
                             type: 'POST',
                             data: JSON.stringify({idSala: _idsala, admin: _user, intialLine: codeLine}),
                             contentType: "application/json"
@@ -246,7 +245,7 @@ var app = (function () {
                             sessionStorage.setItem('nameFile', nameFile);
                         }).then(function(){
                             $.ajax({
-                                    url: _local+"/livecoding/autoSave/"+_idsala,
+                                    url: _external+"/livecoding/autoSave/"+_idsala,
                                     type: 'PUT',
                                     data: JSON.stringify([$("kbd.file-name").text(), codeLine]),
                                     contentType: "application/json"
