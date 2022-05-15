@@ -118,7 +118,7 @@ public class LiveCodingService {
     public List<Object[]> searchMessages(String idSala) {
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Persistence" );
         EntityManager entitymanager = emfactory.createEntityManager();
-        Query query = entitymanager.createNativeQuery( "Select m.author, m.content  from Messages m where m.idchat ='" + idSala + "'");
+        Query query = entitymanager.createNativeQuery( "Select m.author, m.content  from Messages m where m.idchat = ?").setParameter(1, idSala);
         List<Object[]> list1=(List<Object[]>)query.getResultList( );
         return list1;
     }
