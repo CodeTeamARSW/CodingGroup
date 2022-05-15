@@ -1,7 +1,7 @@
 var app = (function () {
     _local = "http://localhost:8080";
-    _external = "20.213.1.54:8080";
-    _url = _local;
+    _external = "https://livecoding-gpvarsw.herokuapp.com/";
+    _url = _external;
     var _user;
     var _password;
     var stompClient = null;
