@@ -53,12 +53,24 @@ public class LiveCodingAPIController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * It receives a room id, searches for all messages in that room, and returns them
+     *
+     * @param idSala The id of the room where the messages are.
+     * @return A list of objects.
+     */
     @RequestMapping(value= "/loadChat/{idSala}", method = RequestMethod.GET)
     public ResponseEntity loadChat(@PathVariable String idSala){
         List<Object[]> messages = lcs.searchMessages(idSala);
         return ResponseEntity.ok(messages);
     }
 
+    /**
+     * It saves the file
+     *
+     * @param idSala The id of the room where the file is located.
+     * @return A ResponseEntity with the status OK.
+     */
     @RequestMapping(value = "/saveFile/{idSala}", method = RequestMethod.GET)
     public ResponseEntity saveFile(@PathVariable String idSala) {
         lcs.persistentFile(idSala);
@@ -84,6 +96,13 @@ public class LiveCodingAPIController {
     }
 
 
+    /**
+     * It receives a JSON object, and saves it in a HashMap
+     *
+     * @param idSala The id of the room where the message is being sent.
+     * @param body The message to be saved.
+     * @return A ResponseEntity with the status OK.
+     */
     @RequestMapping(value = "/autoSaveMessage/{idSala}", method = RequestMethod.PUT)
     public ResponseEntity autoSaveMessage(@PathVariable String idSala, @RequestBody String body) {
         JSONObject message = new JSONObject(body);
@@ -91,6 +110,13 @@ public class LiveCodingAPIController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * It receives a POST request with a JSON body, and saves the information in the database
+     *
+     * @param idSala The id of the room where the event happened.
+     * @param body JSON object with the following parameters:
+     * @return A ResponseEntity object with the status code OK.
+     */
     @RequestMapping(value = "/registryLogs/{idSala}", method = RequestMethod.POST)
     public ResponseEntity registerLog(@PathVariable String idSala, @RequestBody String body){
         JSONObject log = new JSONObject(body);

@@ -34,8 +34,6 @@ public class LiveCodingService {
 
     private final EventRepository eventRepository;
 
-    //private final EventRepository eventRepository;
-
     private HashMap<String, ArrayList<String>> files = new HashMap<>();
 
     public LiveCodingService(UserRepository userRepository, ChatRepository chatRepository, MessageRepository messageRepository, RoomRepository roomRepository, CodeLineRepository codelineRepository, FileRepository fileRepository, EventRepository eventRepository){
@@ -114,6 +112,13 @@ public class LiveCodingService {
         messageRepository.save(newMessage);
     }
 
+    /**
+     * It returns a list of objects, each object is an array of two strings, the first string is the author of the message
+     * and the second string is the content of the message
+     *
+     * @param idSala the id of the chat room
+     * @return A list of objects.
+     */
     public List<Object[]> searchMessages(String idSala) {
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Persistence" );
         EntityManager entitymanager = emfactory.createEntityManager();
@@ -122,6 +127,14 @@ public class LiveCodingService {
         return list1;
     }
 
+    /**
+     * It creates a new thread that will save the event log in the database
+     *
+     * @param idRoom The id of the room where the event happened.
+     * @param activity the activity that the user is doing
+     * @param user The user who performed the action
+     * @param type
+     */
     public void saveEventLog(String idRoom, String activity, String user, String type){
         LogThread lt = new LogThread(idRoom, activity, user, type);
         lt.start();
