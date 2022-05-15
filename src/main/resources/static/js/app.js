@@ -1,6 +1,6 @@
 var app = (function () {
     _local = "http://localhost:8080";
-    _external = "http://livecoding-gpvarsw.herokuapp.com";
+    _external = "http://livecoding.australiaeast.cloudapp.azure.com:8080";
     _url = _external;
     var _user;
     var _password;
