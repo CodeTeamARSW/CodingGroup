@@ -32,9 +32,10 @@ public class LiveCodingAPIController {
     @RequestMapping(value = "/saveRoom", method=RequestMethod.POST)
     public ResponseEntity savRoomId(@RequestBody String body) {
         JSONObject textFile = new JSONObject(body);
-        Room room = lcs.initRoom((String) textFile.get("idSala"), (String) textFile.get("admin"), (String) textFile.get("intialLine"));
-        rooms.put((String) textFile.get("idSala"), room);
-        lcs.saveEventLog(textFile.getString("idSala"), "Create new room for cooperative coding", textFile.getString("admin"), "INFO");
+        String idSala = (String) textFile.get("idSala");
+        Room room = lcs.initRoom(idSala, (String) textFile.get("admin"), (String) textFile.get("intialLine"));
+        rooms.put(idSala, room);
+        lcs.saveEventLog(idSala, "Create new room for cooperative coding", textFile.getString("admin"), "INFO");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

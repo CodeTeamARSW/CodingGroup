@@ -1,8 +1,6 @@
 package edu.eci.arsw.model;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "messages")
