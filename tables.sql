@@ -27,7 +27,7 @@ create table EVENTS (
   idevent integer primary key,
   creation_date date,
   idroom varchar(40),
-  activity varchar(100),
+  activity varchar(400),
   author varchar(20),
   type_evt varchar(10),
   CONSTRAINT fk_room_evt

@@ -27,17 +27,27 @@ var app = (function () {
     var validateLogin = function() {
         _user = document.getElementById('userName').value;
         _password = document.getElementById('password').value;
-        //Guardando usuario
-        sessionStorage.setItem('user', _user);
-        window.location.replace(_local + "/home.html");
-        //window.location.replace(_external + "/home.html");
+        if(_user.length == 0 || _password.length == 0){
+            alert("All fields are required");
+        }else{
+            //Guardando usuario
+            sessionStorage.setItem('user', _user);
+            window.location.replace(_local + "/html/home.html");
+            //window.location.replace(_external + "/html/home.html");
+        }
     };
 
     var goToExistingRoom = function(){
         _idsala = prompt('Enter the room code: ');
         sessionStorage.setItem('idSala', _idsala);
         sessionStorage.setItem('newRoom','no');
-        window.location.assign(_local +"/principal.html");
+        window.location.assign(_local +"/html/principal.html");
+        $.ajax({
+            url: _local+"/livecoding/registryLogs/"+_idsala,
+            type: 'POST',
+            data: JSON.stringify({user: sessionStorage.getItem('user'), activity: "Access to the room: " + _idsala, type: "INFO"}),
+            contentType: "application/json"
+        });
     };
 
     var goToNewRoom = function(){
@@ -45,7 +55,7 @@ var app = (function () {
         alert("The id of the room is: " + _idsala);
         sessionStorage.setItem('idSala', _idsala);
         sessionStorage.setItem('newRoom','yes');
-        window.location.assign(_local +"/principal.html");
+        window.location.assign(_local +"/html/principal.html");
     };
 
     var findLineBlockedByUser = function(user) {
@@ -223,45 +233,68 @@ var app = (function () {
         getStompClient: getStompClient,
         get_idSala: get_idSala,
 
-        init: function() {
-            _user = sessionStorage.getItem('user');
-            _idsala = sessionStorage.getItem('idSala');
-            //Verifica si es nueva sala o no, Si es nueva guarda, sino Carga archivo
-            //Nueva:
-            if (sessionStorage.getItem('newRoom') == 'yes' ){
-                let txtArea = document.getElementById("content");
-                let codeLine = txtArea.children[0].outerText.substring(0, txtArea.children[0].outerText.length-1);
-                console.log(codeLine);
+        validateAccess: function() {
+            if (sessionStorage.getItem('user') == null){
+                window.location.replace(_local + "/html/404.html");
+                console.log("Redirigir a pagina de error 404");
+            };
+        },
+
+        errorLoad: function(){
+            $.get("http://api.ipify.org/?format=json", function(data){
+                console.log(data);
+                console.log("Attempt to unathorized access to application " + data.ip);
+                return data;
+            }).then(function(data){
                 $.ajax({
-                        url: _local+"/livecoding/saveRoom",
-                        type: 'POST',
-                        data: JSON.stringify({idSala: _idsala, admin: _user, intialLine: codeLine}),
-                        contentType: "application/json"
-                    }).then(function(data){
-                        console.log("New file---------");
-                        nameFile = prompt("Enter the name of the file", "HelloWorld.java");
-                        $(".file-name").text(nameFile);
-                        sessionStorage.setItem('nameFile', nameFile);
-                    }).then(function(){
-                        console.log('<--------Entando al PUT del archivo-------->');
-                        console.log('<--------Valor de .file-name--------> ', $("kbd.file-name").text());
-                        $.ajax({
-                                url: _local+"/livecoding/autoSave/"+_idsala,
-                                type: 'PUT',
-                                data: JSON.stringify([$("kbd.file-name").text(), codeLine]),
-                                contentType: "application/json"
-                            });
-                        console.log('<--------Despues del PUT del archivo-------->');
-                    });
-            }
-            if (sessionStorage.getItem('newRoom') == 'no'){
-                loadFile();
-                loadChat();
-            }
-            connectAndSubscribe();
-            appEventsTxtArea.addEventsToTextArea();
-            //Probando dejarlos por separado
-            //loadFile();
+                    url: _local+"/livecoding/registryLogs/eventWarning",
+                    type: 'POST',
+                    data: JSON.stringify({user: "warning_user", activity: "Attempt to unathorized access to application " + data.ip, type: "WARNING"}),
+                    contentType: "application/json"
+                });
+            });
+        },
+
+        init: function() {
+            validateAccess();
+            }.then(function(){
+                _user = sessionStorage.getItem('user');
+                _idsala = sessionStorage.getItem('idSala');
+                //Verifica si es nueva sala o no, Si es nueva guarda, sino Carga archivo
+                //Nueva:
+                if (sessionStorage.getItem('newRoom') == 'yes' ){
+                    let txtArea = document.getElementById("content");
+                    let codeLine = txtArea.children[0].outerText.substring(0, txtArea.children[0].outerText.length-1);
+                    console.log(codeLine);
+                    $.ajax({
+                            url: _local+"/livecoding/saveRoom",
+                            type: 'POST',
+                            data: JSON.stringify({idSala: _idsala, admin: _user, intialLine: codeLine}),
+                            contentType: "application/json"
+                        }).then(function(data){
+                            console.log("New file---------");
+                            nameFile = prompt("Enter the name of the file", "HelloWorld.java");
+                            $(".file-name").text(nameFile);
+                            sessionStorage.setItem('nameFile', nameFile);
+                        }).then(function(){
+                            console.log('<--------Entando al PUT del archivo-------->');
+                            console.log('<--------Valor de .file-name--------> ', $("kbd.file-name").text());
+                            $.ajax({
+                                    url: _local+"/livecoding/autoSave/"+_idsala,
+                                    type: 'PUT',
+                                    data: JSON.stringify([$("kbd.file-name").text(), codeLine]),
+                                    contentType: "application/json"
+                                });
+                            console.log('<--------Despues del PUT del archivo-------->');
+                        });
+                }
+                if (sessionStorage.getItem('newRoom') == 'no'){
+                    loadFile();
+                    loadChat();
+                }
+                connectAndSubscribe();
+                appEventsTxtArea.addEventsToTextArea();
+            })
         },
 
         validateLogin:validateLogin,

@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <title>Home</title>
-    <link rel="shortcut icon" href="icon.webp">
-    <link rel="stylesheet" href="styleshome.css">
+    <link rel="shortcut icon" href="/css/icon.webp">
+    <link rel="stylesheet" href="/css/styleshome.css">
     <script src="/webjars/jquery/jquery.min.js"></script>
-    <script src="/app.js"></script>
+    <script src="/js/app.js"></script>
 </head>
 
 <header>
@@ -15,7 +15,7 @@
     <a class="cta " href="/index.html"><button>Log out</button></a>
 </header>
 
-<body>
+<body onload="app.validateAccess()">
     <div class="content">
         <div class="card">
             <h2>Existing rooms </h2>

@@ -45,7 +45,7 @@ var appEventsTxtArea = (function() {
             if (blockedBy != "") {
                 alert("La línea está siendo editada por el usuario '" + blockedBy + "'");
             } else {
-                _stompClient = app.getStompClient();
+                _stompClient = app.getS6tompClient();
                 _idsala = app.get_idSala();
                 var user = sessionStorage.getItem('user');
                 _stompClient.send('/app/file.'+_idsala, {}, "{\"event\": \"click\", \"numLine\": \""+numLineSelected+"\", \"user\": \"" + user + "\"}");

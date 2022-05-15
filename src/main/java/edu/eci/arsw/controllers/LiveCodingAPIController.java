@@ -37,7 +37,7 @@ public class LiveCodingAPIController {
         System.out.println("Entrando en /saveRoom -> " + textFile +" "+ textFile.get("idSala") +" "+ textFile.get("admin"));
         Room room = lcs.initRoom((String) textFile.get("idSala"), (String) textFile.get("admin"), (String) textFile.get("intialLine"));
         rooms.put((String) textFile.get("idSala"), room);
-        lcs.saveEventLog(textFile.getString("idSala"), "Create new room for cooperative coding", textFile.getString("admin"), "info");
+        lcs.saveEventLog(textFile.getString("idSala"), "Create new room for cooperative coding", textFile.getString("admin"), "INFO");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -68,12 +68,6 @@ public class LiveCodingAPIController {
     @RequestMapping(value = "/saveFile/{idSala}", method = RequestMethod.GET)
     public ResponseEntity saveFile(@PathVariable String idSala) {
         System.out.println("\n Recibiendo petición POST a '/saveFile/{idSala}'");
-        /**JSONArray textFile = new JSONArray(body);
-        ArrayList<String> localFile = new ArrayList<>();
-        //Guardando las líneas
-        for (int i = 1; i<textFile.length(); i++) {
-            localFile.add(textFile.getString(i));
-        }**/
         lcs.persistentFile(idSala);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -111,6 +105,19 @@ public class LiveCodingAPIController {
         JSONObject message = new JSONObject(body);
         lcs.setMessageByIDRoom(idSala, message);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/registryLogs/{idSala}", method = RequestMethod.POST)
+    public ResponseEntity registerLog(@PathVariable String idSala, @RequestBody String body){
+        JSONObject log = new JSONObject(body);
+        System.out.println("Creando un nuevo Log con el metodo POST");
+        System.out.println(idSala);
+        System.out.println(log.getString("activity"));
+        System.out.println(log.getString("user"));
+        System.out.println(log.getString("type"));
+        System.out.println("<======= Terminando de revisar las variables del body =======>");
+        lcs.saveEventLog(idSala, log.getString("activity"), log.getString("user"), log.getString("type"));
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }
