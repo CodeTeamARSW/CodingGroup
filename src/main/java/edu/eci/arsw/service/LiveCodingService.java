@@ -1,5 +1,6 @@
 package edu.eci.arsw.service;
 
+import edu.eci.arsw.logger.Event;
 import edu.eci.arsw.logger.LogThread;
 import edu.eci.arsw.model.*;
 import edu.eci.arsw.repository.*;
@@ -31,25 +32,21 @@ public class LiveCodingService {
 
     private final FileRepository fileRepository;
 
+    private final EventRepository eventRepository;
+
     //private final EventRepository eventRepository;
 
     private HashMap<String, ArrayList<String>> files = new HashMap<>();
 
-    public LiveCodingService(UserRepository userRepository, ChatRepository chatRepository, MessageRepository messageRepository, RoomRepository roomRepository, CodeLineRepository codelineRepository, FileRepository fileRepository){//, EventRepository eventRepository){
+    public LiveCodingService(UserRepository userRepository, ChatRepository chatRepository, MessageRepository messageRepository, RoomRepository roomRepository, CodeLineRepository codelineRepository, FileRepository fileRepository, EventRepository eventRepository){
         this.userRepository = userRepository;
         this.chatRepository = chatRepository;
         this.messageRepository = messageRepository;
         this.roomRepository = roomRepository;
         this.codelineRepository = codelineRepository;
         this.fileRepository = fileRepository;
-        //this.eventRepository = eventRepository;
+        this.eventRepository = eventRepository;
     }
-
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
-    }
-
-
 
     /**
      * This function creates a new room with the given idRoom, admin, and intialLine

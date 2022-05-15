@@ -1,5 +1,6 @@
 package edu.eci.arsw.controllers;
 
+import edu.eci.arsw.logger.Event;
 import edu.eci.arsw.logger.LogThread;
 import edu.eci.arsw.model.Room;
 import edu.eci.arsw.service.LiveCodingService;
@@ -119,5 +120,4 @@ public class LiveCodingAPIController {
         lcs.saveEventLog(idSala, log.getString("activity"), log.getString("user"), log.getString("type"));
         return new ResponseEntity(HttpStatus.OK);
     }
-
 }

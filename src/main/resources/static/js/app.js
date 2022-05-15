@@ -195,13 +195,8 @@ var app = (function () {
     var loadChat = function(){
         var chats;
         $.get("/livecoding/loadChat/"+_idsala, function(data) {
-            console.log("Mensajes cargados..." + data);
             chats = Object.values(data);
         }). then(function(data){
-            console.log("Messages charged --------------------------------------------------------\n", chats);
-            console.log("En 0 ..." + chats[0]);
-            console.log("En 0 0 ..." +chats[0][0]);
-
             for (var i=0; i < chats.length; i++){
                 $("#table-chat tbody").append("<tr><td>" +chats[i][0] + ": "+ chats[i][1] + "</td></tr>");
            }
@@ -219,13 +214,25 @@ var app = (function () {
     };
 
     var saveFile = function() {
-        console.info("Saving file.....");
         $.ajax({
             url: _local+"/livecoding/saveFile/"+_idsala,
             type: 'GET',
             contentType: "application/json"
         });
-    }
+        $.ajax({
+            url: _local+"/livecoding/registryLogs/"+_idsala,
+            type: 'POST',
+            data: JSON.stringify({user: _user, activity: "The user " + _user + " has made changes to the file " + $("#file-name").text(), type: "INFO"}),
+            contentType: "application/json"
+        });
+    };
+
+    var validateAccess = function() {
+        if (sessionStorage.getItem('user') == null){
+            window.location.replace(_local + "/html/404.html");
+            console.log("Redirigir a pagina de error 404");
+        };
+    };
    
     return {
 
@@ -233,12 +240,7 @@ var app = (function () {
         getStompClient: getStompClient,
         get_idSala: get_idSala,
 
-        validateAccess: function() {
-            if (sessionStorage.getItem('user') == null){
-                window.location.replace(_local + "/html/404.html");
-                console.log("Redirigir a pagina de error 404");
-            };
-        },
+        validateAccess:validateAccess,
 
         errorLoad: function(){
             $.get("http://api.ipify.org/?format=json", function(data){
@@ -257,7 +259,7 @@ var app = (function () {
 
         init: function() {
             validateAccess();
-            }.then(function(){
+            setTimeout(function(){
                 _user = sessionStorage.getItem('user');
                 _idsala = sessionStorage.getItem('idSala');
                 //Verifica si es nueva sala o no, Si es nueva guarda, sino Carga archivo
@@ -294,8 +296,7 @@ var app = (function () {
                 }
                 connectAndSubscribe();
                 appEventsTxtArea.addEventsToTextArea();
-            })
-        },
+            },100)},
 
         validateLogin:validateLogin,
         goToExistingRoom:goToExistingRoom,
