@@ -1,8 +1,8 @@
 package edu.eci.arsw.logger;
 
 import javax.persistence.*;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.Random;
 
 @Entity
 @Table(name = "events")
@@ -32,7 +32,7 @@ public class Event {
 
     // A constructor of the class Event.
     public Event(String idroom, String activity, String user, String type){
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
         this.idevent = random.nextInt(999999999-1)+1;
         this.idroom = idroom;
         this.date = LocalDateTime.now();
