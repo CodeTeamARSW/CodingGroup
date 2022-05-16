@@ -24,3 +24,8 @@ https://github.com/CodeTeamARSW/Live-Coding/wiki/Documento-de-Arquitectura
 ### Enlace Taiga
 
 https://tree.taiga.io/project/jose-gamboa-livecoding/backlog
+
+
+### Enlace a la aplicación
+
+http://livecoding.australiaeast.cloudapp.azure.com:8080/
